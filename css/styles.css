@@ -1,0 +1,19 @@
+/*
+==================
+🎨 COLORS USED. 🎨
+==================
+TBD
+=================
+ℹ️ FONTS USED. ℹ️
+=================
+TBD
+*/
+* {
+	box-sizing: border-box;
+}
+
+body {
+	background-color: lightgreen;
+	color: purple;
+	font-family: 'Courier New', Courier, monospace;
+}
