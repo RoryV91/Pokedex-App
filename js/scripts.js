@@ -23,3 +23,6 @@ let pokémonList = [
     }
 
 ]
+for (let i=0; i<pokémonList.length; i++) {
+    document.write(pokémonList[i].name + "." + "<br>")
+}
