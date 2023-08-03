@@ -22,13 +22,6 @@ let pokemonList = [
         ]
     },
     {
-        name: 'Machamp',
-        height: 1.6,
-        types: [
-            'Fighting'
-        ]
-    },
-    {
         name: 'Aerodactyl',
         height: 1.8,
         types: [
