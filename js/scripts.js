@@ -31,11 +31,19 @@ let pokemonList = [
     }
 
 ]
-for (let i=0; i<pokemonList.length; i++) {
-    if (pokemonList[i].height > 1.0) {
-           document.write(pokemonList[i].name + "." + ` Height: ${pokemonList[i].height}` + " Wow, that’s big!"+ "<br>") 
-    } else {
-        document.write(pokemonList[i].name + "." + ` Height: ${pokemonList[i].height}` +  "<br>")
-    }
+// PREV. EXERCISE
+// for (let i=0; i<pokemonList.length; i++) {
+//     if (pokemonList[i].height > 1.0) {
+//            document.write(pokemonList[i].name + "." + ` Height: ${pokemonList[i].height}` + " Wow, that’s big!"+ "<br>") 
+//     } else {
+//         document.write(pokemonList[i].name + "." + ` Height: ${pokemonList[i].height}` +  "<br>")
+//     }
+// }
 
-}
+pokemonList.forEach(function(pokemon) {
+    if (pokemon.height > 1.0) {
+           document.write(pokemon.name + "." + ` Height: ${pokemon.height}` + " Wow, that’s big!"+ "<br>") 
+    } else {
+        document.write(pokemon.name + "." + ` Height: ${pokemon.height}` +  "<br>")
+    }
+})();
