@@ -13,7 +13,28 @@ TBD
 }
 
 body {
-	background-color: lightgreen;
-	color: purple;
+	background-color: rgb(50, 35, 75);
+	color: rgb(10, 23, 136);
 	font-family: 'Courier New', Courier, monospace;
+}
+
+ul {
+	list-style: none;
+}
+
+.pokemon-button {
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	font-size: 2em;
+	font-weight: bold;
+	padding: 10px;
+	margin: 10px;
+	border: 8px solid rgb(12, 42, 164);
+	border-radius: 10px;
+	background: rgb(180, 140, 255);
+	color: rgb(12, 42, 164);
+	cursor: pointer;
+}
+
+.pokemon-button:hover {
+	background-color: rgb(97, 243, 170);
 }
