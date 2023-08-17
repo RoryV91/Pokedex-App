@@ -27,7 +27,7 @@ let pokemonRepository = (function () {
 	function getAll() {
 		return pokemonList;
 	}
-    function addListItem() {
+    function addListItem(pokemon) {
         let pokemonUnorderedList = document.querySelector(".pokemon-list");
         let listItem = document.createElement('li');
         let button = document.createElement('button');
@@ -50,5 +50,5 @@ pokemonRepository.add({
 });
 
 pokemonRepository.getAll().forEach(function (pokemon) {
-    addListItem(pokemon);
+    pokemonRepository.addListItem(pokemon);
 });
