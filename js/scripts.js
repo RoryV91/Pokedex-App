@@ -1,26 +1,6 @@
 let pokemonRepository = (function () {
-	let pokemonList = [
-		{
-			name: "Zubat",
-			height: 0.8,
-			types: ["Poison", "Flying"],
-		},
-		{
-			name: "Growlithe",
-			height: 0.7,
-			types: ["Fire"],
-		},
-		{
-			name: "Cubone",
-			height: 0.4,
-			types: ["Ground"],
-		},
-		{
-			name: "Aerodactyl",
-			height: 1.8,
-			types: ["Flying", "Rock"],
-		},
-	];
+	let pokemonList = [];
+    let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
 	function add(pokemon) {
 		pokemonList.push(pokemon);
 	}
