@@ -31,7 +31,7 @@ let pokemonRepository = (function () {
         let pokemonUnorderedList = document.querySelector(".pokemon-list");
         let listItem = document.createElement('li');
         let button = document.createElement('button');
-        button.innerHTML = pokemon.name;
+        button.innerText = pokemon.name;
         button.classList.add("pokemon-button");
         listItem.appendChild(button);
         pokemonUnorderedList.appendChild(listItem);
@@ -49,12 +49,6 @@ let pokemonRepository = (function () {
         showDetails: showDetails
 	};
 })();
-
-pokemonRepository.add({
-	name: "Scyther",
-	height: 1.5,
-	types: ["Bug", "Flying"],
-});
 
 pokemonRepository.getAll().forEach(function (pokemon) {
     pokemonRepository.addListItem(pokemon);
