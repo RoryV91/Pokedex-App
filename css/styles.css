@@ -29,6 +29,9 @@ ul {
 	margin: 0 auto;
 }
 
+ h1 {
+	font-size: 5rem;
+ }
 .pokemon-button {
 	font-family: Verdana, Geneva, Tahoma, sans-serif;
 	font-size: 2em;
