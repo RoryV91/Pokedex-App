@@ -13,7 +13,7 @@ TBD
 }
 
 body {
-	background-color: rgb(50, 35, 75);
+	background-color: rgb(154, 154, 154);
 	color: rgb(10, 23, 136);
 	font-family: 'Courier New', Courier, monospace;
 	margin: 0 auto;
@@ -21,14 +21,12 @@ body {
 }
 
 ul {
+	display: grid;
+	grid-template-columns: 1fr;
 	list-style: none;
 	padding: 0;
 	max-width: 80vw;
 	margin: 0 auto;
-}
-
-li {
-	width: 100%;
 }
 
 .pokemon-button {
@@ -37,7 +35,6 @@ li {
 	font-weight: bold;
 	padding: 10px;
 	margin: 10px;
-	width: 100%;
 	border: 8px solid rgb(12, 42, 164);
 	border-radius: 10px;
 	background: rgb(180, 140, 255);
