@@ -22,7 +22,7 @@ body {
 
 ul {
 	display: grid;
-	grid-template-columns: 1fr;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
 	list-style: none;
 	padding: 0;
 	max-width: 80vw;
@@ -33,7 +33,7 @@ ul {
 	font-size: 5rem;
  }
 .pokemon-button {
-	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	font-family:'Courier New', Courier, monospace;
 	font-size: 2em;
 	font-weight: bold;
 	padding: 10px;
@@ -48,3 +48,35 @@ ul {
 .pokemon-button:hover {
 	background-color: rgb(97, 243, 170);
 }
+.modal {
+	background-color: rgb(240, 213, 180);
+	border-radius: 50px;
+	width: 50vw;
+	height: 50vh;
+	margin: auto auto;
+	padding: 50px;
+}
+#modal-container {
+	display: none;
+  }
+  
+  #modal-container.is-visible {
+	position: fixed;
+	padding: 20px;
+	box-sizing: border-box;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: rgba(0, 0, 0, 0.5);
+  
+	/* to show it above other content */
+	z-index: 999; 
+  
+	/* to allow scrolling if the screen is not high enough*/
+	overflow: auto; 
+  
+	/* this is used to center the modal */
+	display: grid;
+	text-align: center;
+  }
