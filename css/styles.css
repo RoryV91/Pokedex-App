@@ -29,9 +29,6 @@ ul {
 	margin: 0 auto;
 }
 
- h1 {
-	font-size: 5rem;
- }
 .pokemon-button {
 	font-family:'Courier New', Courier, monospace;
 	font-size: 2em;
@@ -40,13 +37,14 @@ ul {
 	margin: 10px;
 	border: 8px solid rgb(12, 42, 164);
 	border-radius: 10px;
-	background: rgb(180, 140, 255);
+	background: rgb(249, 240, 67);
 	color: rgb(12, 42, 164);
 	cursor: pointer;
 }
 
 .pokemon-button:hover {
-	background-color: rgb(97, 243, 170);
+	color: rgb(243, 97, 97);
+	border-color: rgb(230, 50, 50);
 }
 .modal {
 	background-color: rgb(240, 213, 180);
@@ -69,14 +67,8 @@ ul {
 	width: 100%;
 	height: 100%;
 	background: rgba(0, 0, 0, 0.5);
-  
-	/* to show it above other content */
 	z-index: 999; 
-  
-	/* to allow scrolling if the screen is not high enough*/
 	overflow: auto; 
-  
-	/* this is used to center the modal */
 	display: grid;
 	text-align: center;
   }

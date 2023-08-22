@@ -11,7 +11,8 @@ let pokemonRepository = (function () {
 		let pokemonUnorderedList = document.querySelector(".pokemon-list");
 		let listItem = document.createElement("li");
 		let button = document.createElement("button");
-		button.innerText = pokemon.name;
+		let display = pokemon.name.replace('-m', ' ♂').replace('-f', ' ♀');
+		button.innerText = `#${pokemon.id}` + "\n" + display.charAt(0).toUpperCase() + display.slice(1);
 		button.classList.add("pokemon-button", "show-modal");
 		listItem.appendChild(button);
 		pokemonUnorderedList.appendChild(listItem);
@@ -19,23 +20,53 @@ let pokemonRepository = (function () {
 			showDetails(pokemon);
 		});
 	}
-	function loadList() {
-		return fetch(apiUrl)
-			.then(function (response) {
-				return response.json();
-			})
-			.then(function (json) {
-				json.results.forEach(function (item) {
-					let pokemon = {
-						name: item.name,
-						detailsUrl: item.url,
-					};
-					add(pokemon);
-				});
-			})
-			.catch(function (e) {
-				console.error(e);
+
+
+	// function loadList() {
+	// 	return fetch(apiUrl)
+	// 		.then(function (response) {
+	// 			return response.json();
+	// 		})
+	// 		.then(function (json) {
+	// 			json.results.forEach(function (item) {
+	// 				let pokemon = {
+	// 					name: item.name,
+	// 					id: item.id,
+	// 					detailsUrl: item.url,
+	// 				};
+	// 				add(pokemon);
+	// 			});
+	// 		})
+	// 		.catch(function (e) {
+	// 			console.error(e);
+	// 		});
+	// }
+	//COULD NOT PASS the item.id with the above function, made my own async function instead:
+	async function loadList() {
+		try {
+			const response = await fetch(apiUrl);
+			const json = await response.json();
+			const pokemonPromises = json.results.map(async function (item) {
+				let pokemon = {
+					name: item.name,
+					id: item.id,
+					detailsUrl: item.url,
+				};
+				await loadDetails(pokemon);
+				add(pokemon);
+				return pokemon;
 			});
+	
+			// Wait for all promises to resolve before adding list items
+			const pokemonArray = await Promise.all(pokemonPromises);
+			
+			// Now add list items for each pokemon
+			pokemonArray.forEach(function (pokemon) {
+				addListItem(pokemon);
+			});
+		} catch (e) {
+			console.error(e);
+		}
 	}
 	function loadDetails(item) {
 		let url = item.detailsUrl;
@@ -56,18 +87,15 @@ let pokemonRepository = (function () {
 	}
 	function showDetails(pokemon) {
 		loadDetails(pokemon).then(function () {
-			console.log(pokemon);
+			showModal(pokemon.name, pokemon.id, pokemon.imageUrl);
 		});
 	}
-	function showModal(title, text) {
+	function showModal(title, text, imageUrl) {
 		let modalContainer = document.querySelector("#modal-container");
-		// Clear all existing modal content
 		modalContainer.innerHTML = "";
 		let modal = document.createElement("div");
 		modal.classList.add("modal");
 		modalContainer.addEventListener('click', (e) => {
-			// Since this is also triggered when clicking INSIDE the modal
-			// We only want to close if the user clicks directly on the overlay
 			let target = e.target;
 			if (target === modalContainer) {
 			  hideModal();
@@ -86,15 +114,16 @@ let pokemonRepository = (function () {
 		let contentElement = document.createElement("p");
 		contentElement.innerText = text;
 
+		let imageElement = document.createElement("img");
+		imageElement.src = imageUrl;
+
 		modal.appendChild(closeButtonElement);
 		modal.appendChild(titleElement);
 		modal.appendChild(contentElement);
+		modal.appendChild(imageElement);
 		modalContainer.appendChild(modal);
 		modalContainer.classList.add("is-visible");
 	}
-	document.querySelector("#show-modal").addEventListener("click", () => {
-		showModal("Modal title", "This is the modal content!");
-	});
 
 	function hideModal() {
 		let modalContainer = document.querySelector("#modal-container");
