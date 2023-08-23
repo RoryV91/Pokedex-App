@@ -20,28 +20,6 @@ let pokemonRepository = (function () {
 			showDetails(pokemon);
 		});
 	}
-
-
-	// function loadList() {
-	// 	return fetch(apiUrl)
-	// 		.then(function (response) {
-	// 			return response.json();
-	// 		})
-	// 		.then(function (json) {
-	// 			json.results.forEach(function (item) {
-	// 				let pokemon = {
-	// 					name: item.name,
-	// 					id: item.id,
-	// 					detailsUrl: item.url,
-	// 				};
-	// 				add(pokemon);
-	// 			});
-	// 		})
-	// 		.catch(function (e) {
-	// 			console.error(e);
-	// 		});
-	// }
-	//COULD NOT PASS the item.id with the above function, made my own async function instead:
 	async function loadList() {
 		try {
 			const response = await fetch(apiUrl);
@@ -111,16 +89,19 @@ let pokemonRepository = (function () {
 		let titleElement = document.createElement("h1");
 		titleElement.innerText = title;
 
-		let contentElement = document.createElement("p");
-		contentElement.innerText = text;
+		let idElement = document.createElement("p");
+		idElement.classList.add("modal-id");
+		idElement.innerText = text;
 
 		let imageElement = document.createElement("img");
 		imageElement.src = imageUrl;
 
 		modal.appendChild(closeButtonElement);
+		modal.appendChild(idElement);
 		modal.appendChild(titleElement);
-		modal.appendChild(contentElement);
 		modal.appendChild(imageElement);
+		
+
 		modalContainer.appendChild(modal);
 		modalContainer.classList.add("is-visible");
 	}

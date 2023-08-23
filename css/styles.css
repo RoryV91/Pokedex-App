@@ -30,7 +30,7 @@ ul {
 }
 
 .pokemon-button {
-	font-family:'Courier New', Courier, monospace;
+	font-family: 'Courier New', Courier, monospace;
 	font-size: 2em;
 	font-weight: bold;
 	padding: 10px;
@@ -46,19 +46,52 @@ ul {
 	color: rgb(243, 97, 97);
 	border-color: rgb(230, 50, 50);
 }
+
 .modal {
 	background-color: rgb(240, 213, 180);
 	border-radius: 50px;
-	width: 50vw;
-	height: 50vh;
-	margin: auto auto;
-	padding: 50px;
+	width: 60vw;
+	height: 80vh;
+	margin: auto;
+	display: grid;
+	grid-template-rows: auto 1fr auto;
+	gap: 20px;
+	text-align: center;
+	overflow: scroll;
+	position: relative;
 }
+.modal-id {
+	max-width: fit-content;
+	margin-left: 30px;
+}
+.modal img {
+	height: 40vh;
+	display: block;
+	margin: 0 auto;
+	border: 10px solid rgb(255, 255, 255);
+}
+
+.modal .id {
+    position: absolute;
+    font-size: 18px;
+    font-weight: bold;
+    color: rgb(12, 42, 164);
+}
+
+.modal .modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px; 
+    cursor: pointer;
+    font-size: 18px; 
+    color: rgb(12, 42, 164); 
+}
+
 #modal-container {
 	display: none;
-  }
-  
-  #modal-container.is-visible {
+}
+
+#modal-container.is-visible {
 	position: fixed;
 	padding: 20px;
 	box-sizing: border-box;
@@ -67,8 +100,8 @@ ul {
 	width: 100%;
 	height: 100%;
 	background: rgba(0, 0, 0, 0.5);
-	z-index: 999; 
-	overflow: auto; 
+	z-index: 999;
+	overflow: auto;
 	display: grid;
 	text-align: center;
-  }
+}
