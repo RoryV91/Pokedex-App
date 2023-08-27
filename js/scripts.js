@@ -11,8 +11,12 @@ let pokemonRepository = (function () {
 		let pokemonUnorderedList = document.querySelector(".pokemon-list");
 		let listItem = document.createElement("li");
 		let button = document.createElement("button");
-		let display = pokemon.name.replace('-m', ' ♂').replace('-f', ' ♀');
-		button.innerText = `#${pokemon.id}` + "\n" + display.charAt(0).toUpperCase() + display.slice(1);
+		let display = pokemon.name.replace("-m", " ♂").replace("-f", " ♀");
+		button.innerText =
+			`#${pokemon.id}` +
+			"\n" +
+			display.charAt(0).toUpperCase() +
+			display.slice(1);
 		button.classList.add("pokemon-button", "show-modal");
 		listItem.appendChild(button);
 		pokemonUnorderedList.appendChild(listItem);
@@ -34,10 +38,10 @@ let pokemonRepository = (function () {
 				add(pokemon);
 				return pokemon;
 			});
-	
+
 			// Wait for all promises to resolve before adding list items
 			const pokemonArray = await Promise.all(pokemonPromises);
-			
+
 			// Now add list items for each pokemon
 			pokemonArray.forEach(function (pokemon) {
 				addListItem(pokemon);
@@ -73,20 +77,22 @@ let pokemonRepository = (function () {
 		modalContainer.innerHTML = "";
 		let modal = document.createElement("div");
 		modal.classList.add("modal");
-		modalContainer.addEventListener('click', (e) => {
+		modalContainer.addEventListener("click", (e) => {
 			let target = e.target;
 			if (target === modalContainer) {
-			  hideModal();
+				hideModal();
 			}
-		  });
+		});
 
 		// Add the new modal content
-		let closeButtonElement = document.createElement("button");
-		closeButtonElement.classList.add("modal-close");
-		closeButtonElement.innerText = "Close";
-		closeButtonElement.addEventListener("click", hideModal);
+		let closeIconElement = document.createElement("img");
+		closeIconElement.classList.add("modal-close");
+		closeIconElement.setAttribute("src",  "/img/close-icon.svg");
+		closeIconElement.setAttribute("alt", "Close");
+		closeIconElement.addEventListener("click", hideModal);
 
 		let titleElement = document.createElement("h1");
+		titleElement.setAttribute("class", "pokemon-name");
 		titleElement.innerText = title;
 
 		let idElement = document.createElement("p");
@@ -94,13 +100,13 @@ let pokemonRepository = (function () {
 		idElement.innerText = text;
 
 		let imageElement = document.createElement("img");
+		imageElement.classList.add("pokemon-image");
 		imageElement.src = imageUrl;
 
-		modal.appendChild(closeButtonElement);
+		modal.appendChild(closeIconElement);
 		modal.appendChild(idElement);
 		modal.appendChild(titleElement);
 		modal.appendChild(imageElement);
-		
 
 		modalContainer.appendChild(modal);
 		modalContainer.classList.add("is-visible");
