@@ -16,7 +16,11 @@ let pokemonRepository = (function () {
 			`#${pokemon.id}` +
 			"\n" +
 			display.charAt(0).toUpperCase() +
-			display.slice(1);
+			display.slice(1) + "\n";
+		let tinyImage = document.createElement("img");
+		tinyImage.src = pokemon.imageUrl;
+		tinyImage.alt = `${pokemon.name} Image`;
+		button.appendChild(tinyImage)
 		button.classList.add("pokemon-button", "show-modal");
 		listItem.appendChild(button);
 		pokemonUnorderedList.appendChild(listItem);
@@ -62,6 +66,7 @@ let pokemonRepository = (function () {
 				item.weight = details.weight;
 				item.types = details.types;
 				item.id = details.id;
+				item.abilities = details.abilities;
 			})
 			.catch(function (e) {
 				console.error(e);
@@ -85,15 +90,17 @@ let pokemonRepository = (function () {
 		});
 
 		// Add the new modal content
+		let closeButtonContainer = document.createElement("div");
+		closeButtonContainer.classList.add("modal-close");
 		let closeIconElement = document.createElement("img");
-		closeIconElement.classList.add("modal-close");
-		closeIconElement.setAttribute("src",  "/img/close-icon.svg");
+		closeIconElement.setAttribute("src", "/img/close-icon.svg");
 		closeIconElement.setAttribute("alt", "Close");
 		closeIconElement.addEventListener("click", hideModal);
-
+		closeButtonContainer.appendChild(closeIconElement);
 		let titleElement = document.createElement("h1");
 		titleElement.setAttribute("class", "pokemon-name");
-		titleElement.innerText = title;
+		let capitalizedTitle = title.charAt(0).toUpperCase() + title.slice(1);
+		titleElement.innerText = capitalizedTitle.replace('-m', ' ♂').replace('-f', ' ♀');
 
 		let idElement = document.createElement("p");
 		idElement.classList.add("modal-id");
@@ -103,7 +110,7 @@ let pokemonRepository = (function () {
 		imageElement.classList.add("pokemon-image");
 		imageElement.src = imageUrl;
 
-		modal.appendChild(closeIconElement);
+		modal.appendChild(closeButtonContainer);
 		modal.appendChild(idElement);
 		modal.appendChild(titleElement);
 		modal.appendChild(imageElement);
