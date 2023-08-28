@@ -1,3 +1,4 @@
+document.addEventListener("DOMContentLoaded", function () {
 //IIFE
 let pokemonRepository = (function () {
 	//VAR
@@ -43,7 +44,7 @@ let pokemonRepository = (function () {
 			const pokemonPromises = json.results.map(async function (item) {
 				let pokemon = {
 					name: item.name,
-					id: item.id,
+					id: item.url.split('/')[6],
 					detailsUrl: item.url,
 				};
 				await loadDetails(pokemon);
@@ -105,16 +106,7 @@ let pokemonRepository = (function () {
 		closeIconElement.setAttribute("src", "/img/close-icon.svg");
 		closeIconElement.setAttribute("class", "close-btn-svg");
 		closeIconElement.setAttribute("alt", "Close");
-		//EVENT LISTENERS FOR CLOSE BUTTON
 		closeIconElement.addEventListener("click", hideModal);
-
-		// IT SAYS THESE WORK IN DEV TOOLS, BUT I CANT GET IT TO DISPLAY
-		closeIconElement.addEventListener("mouseenter", function() {
-			closeIconElement.style.stroke = "green";
-		});
-		closeIconElement.addEventListener("mouseleave", function() {
-			closeIconElement.style.stroke = "currentColor";
-		});
 		closeButtonContainer.appendChild(closeIconElement);
 		//CONTENT ELEMENTS FOR MODAL
 		let titleElement = document.createElement("h1");
@@ -160,8 +152,9 @@ let pokemonRepository = (function () {
 	};
 })();
 
-pokemonRepository.loadList().then(function () {
-	pokemonRepository.getAll().forEach(function (pokemon) {
+	pokemonRepository.loadList().then(function () {
+	  pokemonRepository.getAll().forEach(function (pokemon) {
 		pokemonRepository.addListItem(pokemon);
-	});
+	  });
+});
 });

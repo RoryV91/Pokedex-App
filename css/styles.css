@@ -69,12 +69,15 @@ body {
 }
 
 .modal-id {
+	font-weight: bold;
 	font-size: 2em;
 	grid-row: 1;
 	max-width: fit-content;
 	position: absolute;
 	top: 10px;
 	left: 10px;
+	border: 2px solid black;
+	border-radius: 50%;
 }
 
 .pokemon-image {
