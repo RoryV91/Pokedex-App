@@ -1,24 +1,31 @@
+//IIFE
 let pokemonRepository = (function () {
+	//VAR
 	let pokemonList = [];
 	let apiUrl = "https://pokeapi.co/api/v2/pokemon/?limit=151";
+	//PUSH TO LIST
 	function add(pokemon) {
 		pokemonList.push(pokemon);
 	}
 	function getAll() {
 		return pokemonList;
 	}
+	//FOR EACH POKéMON BUTTON
 	function addListItem(pokemon) {
+		//VAR
 		let pokemonUnorderedList = document.querySelector(".pokemon-list");
 		let listItem = document.createElement("li");
 		let button = document.createElement("button");
+		//TEXT FORMATTING
 		let display = pokemon.name.replace("-m", " ♂").replace("-f", " ♀");
 		button.innerText =
 			`#${pokemon.id}` +
 			"\n" +
 			display.charAt(0).toUpperCase() +
 			display.slice(1) + "\n";
+		//ADD SMALL IMAGE
 		let tinyImage = document.createElement("img");
-		tinyImage.src = pokemon.imageUrl;
+		tinyImage.src = pokemon.frontImageUrl;
 		tinyImage.alt = `${pokemon.name} Image`;
 		button.appendChild(tinyImage)
 		button.classList.add("pokemon-button", "show-modal");
@@ -28,6 +35,7 @@ let pokemonRepository = (function () {
 			showDetails(pokemon);
 		});
 	}
+	//LIST OF POKéMON FROM API
 	async function loadList() {
 		try {
 			const response = await fetch(apiUrl);
@@ -43,10 +51,10 @@ let pokemonRepository = (function () {
 				return pokemon;
 			});
 
-			// Wait for all promises to resolve before adding list items
+			// WAIT FOR PROMISES TO RESOLVE
 			const pokemonArray = await Promise.all(pokemonPromises);
 
-			// Now add list items for each pokemon
+			// NOW, ADD POKéMON
 			pokemonArray.forEach(function (pokemon) {
 				addListItem(pokemon);
 			});
@@ -54,6 +62,7 @@ let pokemonRepository = (function () {
 			console.error(e);
 		}
 	}
+	//LOAD DETAILS FOR ONE POKéMON
 	function loadDetails(item) {
 		let url = item.detailsUrl;
 		return fetch(url)
@@ -61,7 +70,7 @@ let pokemonRepository = (function () {
 				return response.json();
 			})
 			.then(function (details) {
-				item.imageUrl = details.sprites.front_default;
+				item.frontImageUrl = details.sprites.front_default;
 				item.height = details.height;
 				item.weight = details.weight;
 				item.types = details.types;
@@ -74,10 +83,10 @@ let pokemonRepository = (function () {
 	}
 	function showDetails(pokemon) {
 		loadDetails(pokemon).then(function () {
-			showModal(pokemon.name, pokemon.id, pokemon.imageUrl);
+			showModal(pokemon.name, pokemon.id, pokemon.frontImageUrl);
 		});
 	}
-	function showModal(title, text, imageUrl) {
+	function showModal(title, text, frontImageUrl) {
 		let modalContainer = document.querySelector("#modal-container");
 		modalContainer.innerHTML = "";
 		let modal = document.createElement("div");
@@ -89,16 +98,28 @@ let pokemonRepository = (function () {
 			}
 		});
 
-		// Add the new modal content
+		// MODAL
 		let closeButtonContainer = document.createElement("div");
 		closeButtonContainer.classList.add("modal-close");
 		let closeIconElement = document.createElement("img");
 		closeIconElement.setAttribute("src", "/img/close-icon.svg");
+		closeIconElement.setAttribute("class", "close-btn-svg");
 		closeIconElement.setAttribute("alt", "Close");
+		//EVENT LISTENERS FOR CLOSE BUTTON
 		closeIconElement.addEventListener("click", hideModal);
+
+		// IT SAYS THESE WORK IN DEV TOOLS, BUT I CANT GET IT TO DISPLAY
+		closeIconElement.addEventListener("mouseenter", function() {
+			closeIconElement.style.stroke = "green";
+		});
+		closeIconElement.addEventListener("mouseleave", function() {
+			closeIconElement.style.stroke = "currentColor";
+		});
 		closeButtonContainer.appendChild(closeIconElement);
+		//CONTENT ELEMENTS FOR MODAL
 		let titleElement = document.createElement("h1");
 		titleElement.setAttribute("class", "pokemon-name");
+		//MORE TEXT FORMATTING
 		let capitalizedTitle = title.charAt(0).toUpperCase() + title.slice(1);
 		titleElement.innerText = capitalizedTitle.replace('-m', ' ♂').replace('-f', ' ♀');
 
@@ -108,17 +129,20 @@ let pokemonRepository = (function () {
 
 		let imageElement = document.createElement("img");
 		imageElement.classList.add("pokemon-image");
-		imageElement.src = imageUrl;
+		imageElement.src = frontImageUrl;
 
+		//PUT THEM ON A MODAL
 		modal.appendChild(closeButtonContainer);
 		modal.appendChild(idElement);
 		modal.appendChild(titleElement);
 		modal.appendChild(imageElement);
 
+		//PUT THE MODAL ON THE PAGE
 		modalContainer.appendChild(modal);
 		modalContainer.classList.add("is-visible");
 	}
-
+	
+	//CLOSE BUTTON
 	function hideModal() {
 		let modalContainer = document.querySelector("#modal-container");
 		modalContainer.classList.remove("is-visible");
