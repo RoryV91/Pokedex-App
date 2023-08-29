@@ -97,7 +97,24 @@ body {
 	margin: 10px auto;
 	max-width: fit-content;
 }
-
+.stats-container {
+	width: 40vw;
+	max-width: 300px;
+	display: grid;
+    place-items: center;
+	margin: 0 auto;
+}
+.pokemon-stats {
+	width: 100%;
+}
+.stat-name-cell {
+	text-align: left;
+	justify-self: start;
+}
+.stat-value-cell {
+	text-align: right;
+	justify-self: end;
+}
 .modal-close {
 	grid-row: 1;
 	position: absolute;
