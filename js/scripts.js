@@ -70,6 +70,7 @@ let pokemonRepository = (function () {
 				item.types = details.types;
 				item.id = details.id;
 				item.abilities = details.abilities;
+				item.stats = details.stats;
 			})
 			.catch(function (e) {
 				console.error(e);
@@ -77,10 +78,10 @@ let pokemonRepository = (function () {
 	}
 	function showDetails(pokemon) {
 		loadDetails(pokemon).then(function () {
-			showModal(pokemon.name, pokemon.id, pokemon.frontImageUrl);
+			showModal(pokemon);
 		});
 	}
-	function showModal(title, text, frontImageUrl) {
+	function showModal(pokemon) {
 		let modalContainer = document.querySelector("#modal-container");
 		modalContainer.innerHTML = "";
 		let modal = document.createElement("div");
@@ -104,23 +105,46 @@ let pokemonRepository = (function () {
 		//CONTENT ELEMENTS FOR MODAL
 		let titleElement = document.createElement("h1");
 		titleElement.setAttribute("class", "pokemon-name");
-		//MORE TEXT FORMATTING
-		let capitalizedTitle = title.charAt(0).toUpperCase() + title.slice(1);
+
+		//DISPLAY POKéMON NAME
+		let capitalizedTitle = pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1);
 		titleElement.innerText = capitalizedTitle.replace('-m', ' ♂').replace('-f', ' ♀');
 
+		//DISPLAY POKéMON NUMBER
 		let idElement = document.createElement("p");
 		idElement.classList.add("modal-id");
-		idElement.innerText = text;
+		idElement.innerText = pokemon.id;
 
+		//PRIMARY IMAGE
 		let imageElement = document.createElement("img");
 		imageElement.classList.add("pokemon-image");
-		imageElement.src = frontImageUrl;
+		imageElement.src = pokemon.frontImageUrl;
 
-		//PUT THEM ON A MODAL
+		//DISPLAY POKéMON TYPES
+		let typesElement = document.createElement("p");
+		typesElement.textContent = "Types: " + pokemon.types.map(type => type.type.name).join(", ");
+		
+		//DISPLAY POKéMON ABILITIES
+		let abilitiesElement = document.createElement("p");
+		abilitiesElement.textContent = "Abilities: " + pokemon.abilities.map(ability => ability.ability.name).join(", ");
+
+		//DISPLAY POKéMON STATS
+		let statsElement = document.createElement("ul");
+		statsElement.textContent = "Stats:";
+		pokemon.stats.forEach(stat => {
+			let statItem = document.createElement("li");
+			statItem.textContent = `${stat.stat.name}: ${stat.base_stat}`;
+			statsElement.appendChild(statItem);
+		});
+
+		//PUT THEM ALL ON A MODAL
 		modal.appendChild(closeButtonContainer);
 		modal.appendChild(idElement);
 		modal.appendChild(titleElement);
 		modal.appendChild(imageElement);
+		modal.appendChild(typesElement);
+		modal.appendChild(abilitiesElement);
+		modal.appendChild(statsElement);
 
 		//PUT THE MODAL ON THE PAGE
 		modalContainer.appendChild(modal);

@@ -74,16 +74,22 @@ body {
 	grid-row: 1;
 	max-width: fit-content;
 	position: absolute;
+	padding: 5px;
 	top: 10px;
 	left: 10px;
-	border: 2px solid black;
+	border: 5px solid rgb(0, 0, 0);
 	border-radius: 50%;
 }
 
 .pokemon-image {
 	display: block;
 	margin: 0 auto;
-	border: 10px solid rgb(255, 255, 255);
+	width: 40vw;
+	height: 40vw;
+	max-height: 320px;
+	max-width: 320px;
+	padding: 10px;
+	border: 5px solid rgb(0, 0, 0);
 }
 
 .pokemon-name {
@@ -95,23 +101,14 @@ body {
 .modal-close {
 	grid-row: 1;
 	position: absolute;
-	top: 10px;
-	right: 10px;
+	top: 15px;
+	right: 15px;
 	cursor: pointer;
 	transition: color 0.3s, transform 0.3s;
 }
 
 .modal-close:hover {
-	transform: rotate(90deg);
-}
-
-.close-btn-svg {
-	color: blueviolet;
-	transition: stroke 0.3s;
-}
-
-.close-btn-svg:hover {
-	stroke: yellow;
+	transform: rotate(360deg);
 }
 
 #modal-container {
@@ -137,7 +134,7 @@ body {
 
 	.pokemon-image {
 		height: auto;
-		max-height: 40vh;
+		width: 50vw;
 	}
 
 	.modal .id,
