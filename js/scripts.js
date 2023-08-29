@@ -12,17 +12,13 @@ let pokemonRepository = (function () {
 	}
 	//FOR EACH POKéMON BUTTON
 	function addListItem(pokemon) {
-		//VAR
 		let pokemonUnorderedList = document.querySelector(".pokemon-list");
 		let listItem = document.createElement("li");
 		let button = document.createElement("button");
-		//TEXT FORMATTING
-		let display = pokemon.name.replace("-m", " ♂").replace("-f", " ♀");
 		button.innerText =
 			`#${pokemon.id}` +
 			"\n" +
-			display.charAt(0).toUpperCase() +
-			display.slice(1) +
+			capitalizeFirstLetter(replaceGenderSymbols(pokemon.name)) +
 			"\n";
 		button.classList.add("pokemon-button", "show-modal");
 		listItem.appendChild(button);
@@ -143,8 +139,7 @@ let pokemonRepository = (function () {
 			let statsRow = document.createElement("tr");
 			let statNameCell = document.createElement("td");
 			let statValueCell = document.createElement("td");
-			statNameCell.textContent =
-				stat.stat.name.charAt(0).toUpperCase() + stat.stat.name.slice(1);
+			statNameCell.textContent = capitalizeFirstLetter(stat.stat.name);
 			statValueCell.textContent = stat.base_stat;
 			statNameCell.classList.add("stat-name-cell");
 			statValueCell.classList.add("stat-value-cell");
@@ -178,7 +173,10 @@ let pokemonRepository = (function () {
 	}
 	//INCLUDE GENDER SYMBOLS
 	function replaceGenderSymbols(name) {
-		return name.replace("-m", " ♂").replace("-f", " ♀");
+		return name
+			.replace(/-m(?!.)$/, " ♂")
+			.replace(/-f(?!.)$/, " ♀")
+			.replace(/(?<=[a-z])-/, " ");
 	}
 
 	//CLOSE MODAL
