@@ -99,9 +99,7 @@ let pokemonRepository = (function () {
 		//DISPLAY POKéMON NAME
 		let titleElement = document.createElement("h1");
 		titleElement.setAttribute("class", "pokemon-name");
-		titleElement.innerText = replaceGenderSymbols(
-			capitalizeFirstLetter(pokemon.name)
-		);
+		titleElement.innerText = capitalizeFirstLetter(replaceGenderSymbols(pokemon.name));
 
 		//DISPLAY POKéMON NUMBER
 		let idElement = document.createElement("p");
@@ -173,10 +171,14 @@ let pokemonRepository = (function () {
 	}
 	//INCLUDE GENDER SYMBOLS
 	function replaceGenderSymbols(name) {
-		return name
-			.replace(/-m(?!.)$/, " ♂")
-			.replace(/-f(?!.)$/, " ♀")
-			.replace(/(?<=[a-z])-/, " ");
+		if (name === "mr-mime") {
+			return "Mr. Mime";
+		} else {
+			return name
+				.replace(/-m(?!.)$/, " ♂")
+				.replace(/-f(?!.)$/, " ♀")
+				.replace(/(^\w+)-(\w+)/, (match, p1, p2) => `${capitalizeFirstLetter(p1)} ${capitalizeFirstLetter(p2)}`);
+		}
 	}
 
 	//CLOSE MODAL
