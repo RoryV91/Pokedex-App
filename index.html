@@ -18,9 +18,72 @@
     </head>
 
     <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand"
+                href="#">My Pokédex</a>
+            <button class="navbar-toggler"
+                type="button"
+                data-toggle="collapse"
+                data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse"
+                id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link"
+                            href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle"
+                            href="#"
+                            id="navbarDropdown"
+                            role="button"
+                            data-toggle="dropdown"
+                            aria-haspopup="true"
+                            aria-expanded="false">
+                            Generations
+                        </a>
+                        <div class="dropdown-menu"
+                            aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item"
+                                href="#">1st gen</a>
+                            <a class="dropdown-item"
+                                href="#">2nd gen</a>
+                            <a class="dropdown-item"
+                                href="#">3rd gen</a>
+                            <a class="dropdown-item"
+                                href="#">4th gen</a>
+                            <a class="dropdown-item"
+                                href="#">5th gen</a>
+                            <a class="dropdown-item"
+                                href="#">6th gen</a>
+                            <a class="dropdown-item"
+                                href="#">7th gen</a>
+                            <a class="dropdown-item"
+                                href="#">8th gen</a>
+                            <a class="dropdown-item"
+                                href="#">9th gen</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item"
+                                href="#">idk yet</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link"
+                            href="#">About</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
         <h1 id="main-title">My Pokédex</h1>
         <h2 id="main-subtitle">Something about Pokémon and such...</h2>
-        <ul class="pokemon-list"></ul>
+        <ul class="pokemon-list list-group"></ul>
         <div id="modal-container"></div>
         <script src="js/promise-polyfill.js"></script>
         <script src="js/fetch-polyfill.js"></script>

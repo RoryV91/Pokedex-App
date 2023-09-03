@@ -1,4 +1,4 @@
-/*
+/* 
 ==================
 🎨 COLORS USED. 🎨
 ==================
@@ -8,7 +8,7 @@ TBD
 =================
 TBD
 */
-* {
+/* * {
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
@@ -21,8 +21,8 @@ body {
 	margin: 0 auto;
 	text-align: center;
 }
-
-.pokemon-list {
+ 
+ .pokemon-list {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
 	grid-auto-rows: max-content;
@@ -51,7 +51,7 @@ body {
 .pokemon-button:hover {
 	color: rgb(243, 97, 97);
 	border-color: rgb(230, 50, 50);
-}
+} 
 
 .modal {
 	color: black;
@@ -204,4 +204,4 @@ body {
 	}
 }
 
-
+ */
