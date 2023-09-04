@@ -34,9 +34,10 @@
             <div class="collapse navbar-collapse"
                 id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto w-100">
-                    <li class="nav-item active">
-                        <a class="nav-link"
-                            href="#">Home <span class="sr-only">(current)</span></a>
+                    <li class="nav-item">
+                        <a class="nav-link section-link"
+                            data-section="home"
+                            href="#">Home</a>
                     </li>
 
                     <li class="nav-item dropdown">
@@ -49,34 +50,41 @@
                             aria-expanded="false">
                             Generations
                         </a>
-                        <div class="dropdown-menu"
+                        <div class="dropdown-menu bg-dark"
                             id="generation-dropdown"
                             aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item"
-                                data-generation="1st gen">1st gen</a>
-                            <a class="dropdown-item"
-                                data-generation="2nd gen">2nd gen</a>
-                            <a class="dropdown-item"
-                                data-generation="3rd gen">3rd gen</a>
-                            <a class="dropdown-item"
-                                data-generation="4th gen">4th gen</a>
-                            <a class="dropdown-item"
-                                data-generation="5th gen">5th gen</a>
-                            <a class="dropdown-item"
-                                data-generation="6th gen">6th gen</a>
-                            <a class="dropdown-item"
-                                data-generation="7th gen">7th gen</a>
-                            <a class="dropdown-item"
-                                data-generation="8th gen">8th gen</a>
-                            <a class="dropdown-item"
-                                data-generation="9th gen">9th gen</a>
-                            <div class="dropdown-divider"></div>
-                            <a class="dropdown-item"
-                                href="#">idk yet</a>
+                            <a class="dropdown-item nav-link generation-link"
+                                data-offset="0"
+                                href="#">1st gen</a>
+                            <a class="dropdown-item nav-link generation-link"
+                                data-offset="151"
+                                href="#">2nd gen</a>
+                            <a class="dropdown-item nav-link generation-link"
+                                data-offset="251"
+                                href="#">3rd gen</a>
+                            <a class="dropdown-item nav-link generation-link"
+                                data-offset="386"
+                                href="#">4th gen</a>
+                            <a class="dropdown-item nav-link generation-link"
+                                data-offset="493"
+                                href="#">5th gen</a>
+                            <a class="dropdown-item nav-link generation-link"
+                                data-offset="649"
+                                href="#">6th gen</a>
+                            <a class="dropdown-item nav-link generation-link"
+                                data-offset="721"
+                                href="#">7th gen</a>
+                            <a class="dropdown-item nav-link generation-link"
+                                data-offset="809"
+                                href="#">8th gen</a>
+                            <a class="dropdown-item nav-link generation-link"
+                                data-offset="905"
+                                href="#">9th gen</a>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link"
+                        <a class="nav-link section-link"
+                            data-section="about-page"
                             href="#">About</a>
                     </li>
                     <li class="ml-auto ml-sm-0">
@@ -89,13 +97,28 @@
                 </ul>
             </div>
         </nav>
-        <section>
-        <div class="container">
-            <h1 id="main-title">My Pokédex</h1>
-            <h2 id="main-subtitle">Something about Pokémon and such...</h2>
-            <ul class="pokemon-list row"></ul>
-        </div>  
-        <div id="modal-container"></div>
+        <section id="home">
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container">
+                    <h1 class="display-4">Pokédex App</h1>
+                    <p class="lead">Something about Pokémon and such...</p>
+                </div>
+            </div>
+        </section>
+        <section id="pokemon-page">
+            <div class="container">
+                <h1>Pokémon List</h1>
+                <ul class="pokemon-list row"></ul>
+            </div>
+            <div id="modal-container"></div>
+        </section>
+        <section id="about-page">
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container">
+                    <h1 class="display-4">About</h1>
+                    <p class="lead">Something about Pokémon legality and such...</p>
+                </div>
+            </div>
         </section>
         <script src="js/promise-polyfill.js"></script>
         <script src="js/fetch-polyfill.js"></script>

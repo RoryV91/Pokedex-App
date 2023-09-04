@@ -1,6 +1,6 @@
 // IIFE
 let pokemonRepository = (function () {
-	// GLOBAL VARIABLES	
+	// GLOBAL VARIABLES
 	let pokemonList = [];
 	let apiUrl = "https://pokeapi.co/api/v2/pokemon/?limit=1010";
 
@@ -24,31 +24,26 @@ let pokemonRepository = (function () {
 			"list-unstyled",
 			"text-center"
 		);
-	
+
 		let button = document.createElement("button");
 		button.innerText =
 			`#${pokemon.id}` +
 			"\n" +
 			capitalizeFirstLetter(replaceGenderSymbols(pokemon.name)) +
 			"\n";
-		button.classList.add(
-			"pokemon-button",
-			"btn-block",
-			"btn-secondary"
-		);
-	
+		button.classList.add("pokemon-button", "btn-block", "btn-secondary");
+
 		// ADD DATA
 		button.setAttribute("data-toggle", "modal");
 		button.setAttribute("data-target", "#pokemonModal");
-	
+
 		listItem.appendChild(button);
 		pokemonList.appendChild(listItem);
-	
+
 		button.addEventListener("click", function (e) {
 			showDetails(pokemon, button);
 		});
 	}
-	
 
 	// LIST OF POKéMON FROM API
 	function loadList() {
@@ -78,7 +73,8 @@ let pokemonRepository = (function () {
 				return response.json();
 			})
 			.then(function (details) {
-				item.frontImageUrl = details.sprites.other["official-artwork"].front_default;
+				item.frontImageUrl =
+					details.sprites.other["official-artwork"].front_default;
 				item.height = details.height;
 				item.weight = details.weight;
 				item.types = details.types;
@@ -308,14 +304,11 @@ let pokemonRepository = (function () {
 	function replaceGenderSymbols(name) {
 		if (name === "mr-mime") {
 			return "Mr. Mime";
-		} 
-		else if (name === "mr-rime") {
+		} else if (name === "mr-rime") {
 			return "Mr. Rime";
-		}
-		else if (name === "mime-jr") {
+		} else if (name === "mime-jr") {
 			return "Mime Jr.";
-		}
-		else {
+		} else {
 			return name
 				.replace(/-m(?!.)$/, " ♂")
 				.replace(/-f(?!.)$/, " ♀")
@@ -326,6 +319,49 @@ let pokemonRepository = (function () {
 				);
 		}
 	}
+
+	// PAGE NAVIGATION
+
+	// EVENT LISTENER FOR NAVBAR
+	document.querySelectorAll(".nav-link").forEach((anchor) => {
+		anchor.addEventListener("click", function (e) {
+			e.preventDefault();
+
+			const sectionId = this.getAttribute("data-section");
+			const section = document.querySelector(`#${sectionId}`);
+
+			if (section) {
+				section.scrollIntoView({ behavior: "smooth", block: "start" });
+			}
+		});
+	});
+
+	// EVENT LISTENER FOR DROPDOWN MENU
+	const generationLinks = document.querySelectorAll(".generation-link");
+	generationLinks.forEach(function (genLink) {
+		genLink.addEventListener("click", function (e) {
+			e.preventDefault();
+
+			// FIND FIRST POKéMON OF GENERATION
+			const offset = genLink.getAttribute("data-offset");
+			const buttons = document.querySelectorAll(".pokemon-button");
+			const buttonToFocus = buttons[offset];
+			if (buttonToFocus) {
+				const navHeight = document.querySelector(".navbar").offsetHeight;
+				const buttonPosition = buttonToFocus.getBoundingClientRect().top;
+				const scrollPosition = window.scrollY + buttonPosition - navHeight;
+
+				window.scrollTo({
+					top: scrollPosition,
+					behavior: "smooth",
+				});
+
+				setTimeout(() => {
+					buttonToFocus.focus();
+				}, 500);
+			}
+		});
+	});
 
 	//IIFE FUNCTIONS
 	return {
@@ -341,6 +377,7 @@ let pokemonRepository = (function () {
 		capitalizeFirstLetter: capitalizeFirstLetter,
 	};
 })();
+
 document.addEventListener("DOMContentLoaded", function () {
 	// CALL IIFE
 	pokemonRepository.loadList().then(function () {
@@ -349,4 +386,3 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	});
 });
-
