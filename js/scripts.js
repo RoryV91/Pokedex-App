@@ -1,31 +1,9 @@
 // IIFE
 let pokemonRepository = (function () {
-	// GLOBAL VARIABLES
-	const generationOffsets = {
-		"1st gen": 0, 
-		"2nd gen": 151, 
-		"3rd gen": 251,  
-		"4th gen": 386,
-		"5th gen": 493,
-		"6th gen": 649,
-		"7th gen": 721,
-		"8th gen": 809,
-		"9th gen": 905,  
-	};
-	const generationLimits = {
-		"1st gen": 151,
-		"2nd gen": 251,
-		"3rd gen": 386,
-		"4th gen": 493,
-		"5th gen": 649,
-		"6th gen": 721,
-		"7th gen": 809,
-		"8th gen": 905,
-		"9th gen": 1020,
-	}
+	// GLOBAL VARIABLES	
 	let pokemonList = [];
-	let apiUrl = "https://pokeapi.co/api/v2/pokemon/?limit=151";
-	
+	let apiUrl = "https://pokeapi.co/api/v2/pokemon/?limit=1010";
+
 	// PUSH TO LIST
 	function add(pokemon) {
 		pokemonList.push(pokemon);
@@ -59,7 +37,7 @@ let pokemonRepository = (function () {
 			"btn-secondary"
 		);
 	
-		// ADD DATA ATTRIBUTES
+		// ADD DATA
 		button.setAttribute("data-toggle", "modal");
 		button.setAttribute("data-target", "#pokemonModal");
 	
@@ -100,7 +78,7 @@ let pokemonRepository = (function () {
 				return response.json();
 			})
 			.then(function (details) {
-				item.frontImageUrl = details.sprites.front_default;
+				item.frontImageUrl = details.sprites.other["official-artwork"].front_default;
 				item.height = details.height;
 				item.weight = details.weight;
 				item.types = details.types;
@@ -326,11 +304,18 @@ let pokemonRepository = (function () {
 		return string.charAt(0).toUpperCase() + string.slice(1);
 	}
 
-	//INCLUDE GENDER SYMBOLS
+	//INCLUDE GENDER SYMBOLS (AND EXCEPTIONS FOR MR. MIME, MR. RIME, MIME JR.)
 	function replaceGenderSymbols(name) {
 		if (name === "mr-mime") {
 			return "Mr. Mime";
-		} else {
+		} 
+		else if (name === "mr-rime") {
+			return "Mr. Rime";
+		}
+		else if (name === "mime-jr") {
+			return "Mime Jr.";
+		}
+		else {
 			return name
 				.replace(/-m(?!.)$/, " ♂")
 				.replace(/-f(?!.)$/, " ♀")
@@ -356,9 +341,12 @@ let pokemonRepository = (function () {
 		capitalizeFirstLetter: capitalizeFirstLetter,
 	};
 })();
-//CALL IIFE
-pokemonRepository.loadList().then(function () {
-	pokemonRepository.getAll().forEach(function (pokemon) {
-		pokemonRepository.addListItem(pokemon);
+document.addEventListener("DOMContentLoaded", function () {
+	// CALL IIFE
+	pokemonRepository.loadList().then(function () {
+		pokemonRepository.getAll().forEach(function (pokemon) {
+			pokemonRepository.addListItem(pokemon);
+		});
 	});
 });
+

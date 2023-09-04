@@ -1,13 +1,3 @@
-/* 
-==================
-🎨 COLORS USED. 🎨
-==================
-TBD
-=================
-ℹ️ FONTS USED. ℹ️
-=================
-TBD
-*/
 :root {
 		--background-light: rgb(245, 245, 245);
 		--text-light: rgb(17, 17, 17);
@@ -37,6 +27,15 @@ body {
     background-color: var(--background); 
     color: var(--text);
 }
+.navbar {
+	position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+.container {
+	margin-top: 90px;
+}
 .pokemon-button, .pokemon-types, .pokemon-abilities {
 	border-radius: 5px;
 }
@@ -50,8 +49,9 @@ body {
 	text-align: center;
 }
 .pokemon-image {
-	background-color: rgb(245, 245, 245);
+	background-color: rgb(245, 245, 245, 0.5);
 	border-radius: 5px;
+	border: none;
 	width: 200px;
 }
 .close {
