@@ -2,30 +2,7 @@
 let pokemonRepository = (function () {
 	// VAR
 	let pokemonList = [];
-	let apiUrl = "https://pokeapi.co/api/v2/pokemon/?limit=151";
-	let pokemonTypes = [];
-	let apiUrlTypes = "https://pokeapi.co/api/v2/type/";
-	const typeColors = {
-		normal: "rgb(238, 238, 232)",
-		fighting: "rgb(130, 66, 66)",
-		flying: "rgb(173, 126, 238)",
-		poison: "rgb(108, 16, 238)",
-		ground: "rgb(133, 108, 74)",
-		rock: "rgb(198, 179, 153)",
-		bug: "rgb(154, 253, 174)",
-		ghost: "rgb(140, 115, 191)",
-		steel: "rgb(158, 158, 160)",
-		fire: "rgb(234, 115, 115)",
-		water: "rgb(77, 116, 233)",
-		grass: "rgb(205, 255, 199)",
-		electric: "rgb(255, 235, 120)",
-		psychic: "rgb(232, 173, 250)",
-		ice: "rgb(182, 237, 255)",
-		dragon: "rgb(255, 197, 138)",
-		dark: "rgb(49, 49, 50)",
-		fairy: "rgb(255, 205, 251)",
-		unknown: "rgb(45, 47, 92)",
-	};
+	let apiUrl = "https://pokeapi.co/api/v2/pokemon/?limit=551";
 	// PUSH TO LIST
 	function add(pokemon) {
 		pokemonList.push(pokemon);
@@ -116,7 +93,7 @@ let pokemonRepository = (function () {
 	function showModal(pokemon, triggeringButton) {
 		// CREATE MODAL
 		let modal = document.createElement("div");
-		modal.classList.add("modal", "fade");
+		modal.classList.add("modal", "fade", "border");
 		modal.id = "pokemonModal";
 		modal.setAttribute("tabindex", "-1");
 		modal.setAttribute("aria-labelledby", "exampleModalLabel");
@@ -130,17 +107,17 @@ let pokemonRepository = (function () {
 		let modalContent = document.createElement("div");
 		modalContent.classList.add("modal-content");
 
-		  // Determine the type combination
-		  const types = pokemon.types.map(type => type.type.name);
+		// DETERMINE POKéMON TYPE(S)
+		const types = pokemon.types.map((type) => type.type.name);
 
-		  // Set the background color of the modal content
-		  if (types.length === 1) {
+		// Set the background color of the modal content
+		if (types.length === 1) {
 			modalContent.style.backgroundColor = `var(--${types[0]}-color)`;
-		  } else {
-			const typeColors = types.map(type => `var(--${type}-color)`);
+		} else {
+			const typeColors = types.map((type) => `var(--${type}-color)`);
 			const gradientBg = `linear-gradient(45deg, ${typeColors.join(", ")})`;
 			modalContent.style.backgroundImage = gradientBg;
-		  }
+		}
 
 		// CREATE MODAL HEADER
 		let modalHeader = document.createElement("div");
@@ -176,7 +153,7 @@ let pokemonRepository = (function () {
 
 		// DISPLAY PRIMARY POKÉMON IMAGE
 		let imageElement = document.createElement("img");
-		imageElement.classList.add("pokemon-image", "mx-auto", "d-block");
+		imageElement.classList.add("pokemon-image", "mx-auto", "d-block", "border", "mb-3");
 		imageElement.src = pokemon.frontImageUrl;
 		modalBody.appendChild(imageElement);
 
@@ -244,6 +221,7 @@ let pokemonRepository = (function () {
 		// SHOW MODAL
 		$(modal).modal("show");
 	}
+	  
 
 	// CLOSE MODAL
 	function hideModal() {

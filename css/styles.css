@@ -15,12 +15,12 @@ TBD
 		--poison-color: rgb(108, 16, 238);
 		--ground-color: rgb(133, 108, 74);
 		--rock-color: rgb(198, 179, 153);
-		--bug-color: rgb(154, 253, 174);
+		--bug-color: rgb(37, 107, 0);
 		--ghost-color: rgb(140, 115, 191);
 		--steel-color: rgb(158, 158, 160);
 		--fire-color: rgb(234, 115, 115);
 		--water-color: rgb(77, 116, 233);
-		--grass-color: rgb(205, 255, 199);
+		--grass-color: rgb(54, 249, 100);
 		--electric-color: rgb(255, 235, 120);
 		--psychic-color: rgb(232, 173, 250);
 		--ice-color: rgb(182, 237, 255);
@@ -35,3 +35,60 @@ body {
 .pokemon-button {
 	border-radius: 10px;
 }
+
+.table, .modal-header, .pokemon-types, .pokemon-abilities {
+	background-color: bisque;
+}
+
+.pokemon-types, .pokemon-abilities {
+	text-align: center;
+}
+.pokemon-image {
+	background-color: rgb(245, 245, 245);
+	border: 5px solid black;
+}
+
+.modal-content {
+	border: 5px solid black;
+}
+
+.switch {
+	display: inline-block;
+	position: relative;
+	width: 60px;
+	height: 34px;
+  }
+
+  
+  .slider {
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: -4px;
+	bottom: 0;
+	background-color: #ccc;
+	transition: 0.4s;
+	border-radius: 5px;
+  }
+  
+  .slider:before {
+	position: absolute;
+	content: "";
+	height: 26px;
+	width: 26px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	transition: 0.4s;
+	border-radius: 5px;
+  }
+  
+  input:checked + .slider {
+	background-color: rgb(35, 35, 35);
+  }
+  
+  input:checked + .slider:before {
+	transform: translateX(30px);
+  }
+  
