@@ -9,6 +9,10 @@ TBD
 TBD
 */
 :root {
+		--background-light: rgb(245, 245, 245);
+		--text-light: rgb(17, 17, 17);
+		--background-dark: rgb(54, 53, 53);
+		--text-dark: rgb(229, 226, 226);
 		--normal-color: rgb(238, 238, 232);
 		--fighting-color: rgb(130, 66, 66);
 		--flying-color: rgb(173, 126, 238);
@@ -30,14 +34,16 @@ TBD
 		--unknown-color: rgb(45, 47, 92);
 }
 body {
-	background-color: rgb(172, 171, 171);
+    background-color: var(--background); 
+    color: var(--text);
 }
-.pokemon-button {
-	border-radius: 10px;
+.pokemon-button, .pokemon-types, .pokemon-abilities {
+	border-radius: 5px;
 }
 
 .table, .modal-header, .pokemon-types, .pokemon-abilities {
-	background-color: bisque;
+	background-color: var(--background); 
+    color: var(--text);
 }
 
 .pokemon-types, .pokemon-abilities {
@@ -45,11 +51,18 @@ body {
 }
 .pokemon-image {
 	background-color: rgb(245, 245, 245);
-	border: 5px solid black;
+	border-radius: 5px;
+	width: 200px;
+}
+.close {
+	color: var(--text);
+	opacity: 1;
+	text-shadow: none;
 }
 
 .modal-content {
-	border: 5px solid black;
+	border: 5px solid var(--background);
+	border-radius: 10px;
 }
 
 .switch {
@@ -57,10 +70,9 @@ body {
 	position: relative;
 	width: 60px;
 	height: 34px;
-  }
+}
 
-  
-  .slider {
+.slider {
 	position: absolute;
 	cursor: pointer;
 	top: 0;
@@ -70,11 +82,12 @@ body {
 	background-color: #ccc;
 	transition: 0.4s;
 	border-radius: 5px;
-  }
-  
-  .slider:before {
+}
+
+.slider:before {
 	position: absolute;
-	content: "";
+	text-align: center;
+	content: "☀️";
 	height: 26px;
 	width: 26px;
 	left: 4px;
@@ -82,13 +95,15 @@ body {
 	background-color: white;
 	transition: 0.4s;
 	border-radius: 5px;
-  }
-  
-  input:checked + .slider {
+}
+
+input:checked + .slider {
 	background-color: rgb(35, 35, 35);
-  }
-  
-  input:checked + .slider:before {
+	content: "🌙";
+}
+
+input:checked + .slider:before {
 	transform: translateX(30px);
-  }
-  
+	content: "🌙";
+	color: white;
+}
