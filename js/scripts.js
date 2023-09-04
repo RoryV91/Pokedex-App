@@ -3,6 +3,8 @@ let pokemonRepository = (function () {
 	//VAR
 	let pokemonList = [];
 	let apiUrl = "https://pokeapi.co/api/v2/pokemon/?limit=151";
+	let pokemonTypes = [];
+	let apiUrlTypes = "https://pokeapi.co/api/v2/type/";
 	//PUSH TO LIST
 	function add(pokemon) {
 		pokemonList.push(pokemon);
@@ -32,9 +34,6 @@ let pokemonRepository = (function () {
 		});
 	  }
 	  
-	  
-	  
-	  
 	//LIST OF POKéMON FROM API
 	function loadList() {
 		return fetch(apiUrl)
@@ -51,8 +50,22 @@ let pokemonRepository = (function () {
 					add(pokemon);
 				});
 			})
+			.then(fetchPokemonTypes)
 			.catch(function (e) {
 				console.error(e);
+			});
+	}
+	// LIST OF POKéMON TYPES FROM API
+	function fetchPokemonTypes() {
+		return fetch(apiUrlTypes)
+			.then(function (response) {
+				return response.json();
+			})
+			.then(function (data) {
+				pokemonTypes = data.results.map((type) => type.name);
+			})
+			.catch(function (error) {
+				console.error("Error fetching Pokémon types:", error);
 			});
 	}
 	//LOAD DETAILS FOR ONE POKéMON
@@ -81,7 +94,7 @@ let pokemonRepository = (function () {
 		});
 	}
 	function showModal(pokemon, triggeringButton) {
-		// Create a Bootstrap modal
+		// CREATE MODAL
 		let modal = document.createElement("div");
 		modal.classList.add("modal", "fade");
 		modal.id = "pokemonModal";
@@ -89,26 +102,26 @@ let pokemonRepository = (function () {
 		modal.setAttribute("aria-labelledby", "exampleModalLabel");
 		modal.setAttribute("aria-hidden", "true");
 
-		// Create modal dialog
+		// CREATE MODAL DIALOG
 		let modalDialog = document.createElement("div");
 		modalDialog.classList.add("modal-dialog");
 
-		// Create modal content
+		// CREATE MODAL CONTENT
 		let modalContent = document.createElement("div");
 		modalContent.classList.add("modal-content");
 
-		// Create modal header
+		// CREATE MODAL HEADER
 		let modalHeader = document.createElement("div");
 		modalHeader.classList.add("modal-header");
 		modalContent.appendChild(modalHeader);
 
-		// Display Pokemon number
+		// DISPLAY POKÉMON NUMBER
 		let idElement = document.createElement("p");
 		idElement.classList.add("modal-id", "mr-auto");
 		idElement.innerText = `#${pokemon.id}`;
 		modalHeader.appendChild(idElement);
 
-		// Create modal title
+		// MODAL TITLE
 		let modalTitle = document.createElement("h5");
 		modalTitle.classList.add("modal-title", "pokemon-name", "mx-auto");
 		modalTitle.innerText = capitalizeFirstLetter(
@@ -116,7 +129,7 @@ let pokemonRepository = (function () {
 		);
 		modalHeader.appendChild(modalTitle);
 
-		// Create close button
+		// CLOSE BUTTON
 		let closeButton = document.createElement("button");
 		closeButton.type = "button";
 		closeButton.classList.add("close");
@@ -125,17 +138,17 @@ let pokemonRepository = (function () {
 		closeButton.innerHTML = "&times;";
 		modalHeader.appendChild(closeButton);
 
-		// Create modal body
+		// MODAL BODY
 		let modalBody = document.createElement("div");
 		modalBody.classList.add("modal-body");
 
-		// Display primary image
+		// DISPLAY PRIMARY POKÉMON IMAGE
 		let imageElement = document.createElement("img");
 		imageElement.classList.add("pokemon-image", "mx-auto", "d-block");
 		imageElement.src = pokemon.frontImageUrl;
 		modalBody.appendChild(imageElement);
 
-		// Display Pokemon types
+		// DISPLAY POKÉMON TYPES
 		let typesElement = document.createElement("p");
 		typesElement.classList.add("pokemon-types");
 		typesElement.textContent =
@@ -145,7 +158,7 @@ let pokemonRepository = (function () {
 				.join(", ");
 		modalBody.appendChild(typesElement);
 
-		// Display Pokemon abilities
+		// DISPLAY POKÉMON ABILITIES
 		let abilitiesElement = document.createElement("p");
 		abilitiesElement.classList.add("pokemon-abilities");
 		abilitiesElement.textContent =
@@ -155,7 +168,7 @@ let pokemonRepository = (function () {
 				.join(", ");
 		modalBody.appendChild(abilitiesElement);
 
-		// Display Pokemon stats
+		// DISPLAY POKÉMON STATS
 		let statsTableElement = document.createElement("table");
 		statsTableElement.classList.add("table");
 		statsTableElement.classList.add("table-bordered");
@@ -174,38 +187,32 @@ let pokemonRepository = (function () {
 			statValueCell.textContent = stat.base_stat;
 			statsRow.appendChild(statValueCell);
 		});
-
+		
+		// APPEND TO MODAL
 		modalBody.appendChild(statsTableElement);
-
-		// Add modal body to modal content
 		modalContent.appendChild(modalBody);
-
-		// Add modal content to modal dialog
 		modalDialog.appendChild(modalContent);
-
-		// Add modal dialog to modal
 		modal.appendChild(modalDialog);
 
-		// Append modal to the modal container
+		// APPEND MODAL
 		let modalContainer = document.querySelector("#modal-container");
 		modalContainer.innerHTML = "";
 		modalContainer.appendChild(modal);
 
-		// Focus the first focusable element when modal is shown
+		// FOCUS ON FIRST ELEMENT WHEN MODAL IS SHOWN
 		$(modal).on("shown.bs.modal", function () {
 			idElement.focus();
 		});
 
-		// Return focus to the button that triggered the modal when it's closed
+		// RETURN FOCUS TO TRIGGERING BUTTON WHEN MODAL IS HIDDEN
 		$(modal).on("hidden.bs.modal", function () {
-			// Assuming you have a reference to the button that triggered the modal
 			triggeringButton.focus();
 		});
 
-		// Show the Bootstrap modal
+		// SHOW MODAL
 		$(modal).modal("show");
 	}
-
+	
 	//TEXT FORMATTING
 
 	// CAPITALIZE FIRST LETTER OF DATA FROM API
