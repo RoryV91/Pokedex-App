@@ -8,12 +8,27 @@ TBD
 =================
 TBD
 */
- /* * {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
-} */
-
+:root {
+		--normal-color: rgb(238, 238, 232);
+		--fighting-color: rgb(130, 66, 66);
+		--flying-color: rgb(173, 126, 238);
+		--poison-color: rgb(108, 16, 238);
+		--ground-color: rgb(133, 108, 74);
+		--rock-color: rgb(198, 179, 153);
+		--bug-color: rgb(154, 253, 174);
+		--ghost-color: rgb(140, 115, 191);
+		--steel-color: rgb(158, 158, 160);
+		--fire-color: rgb(234, 115, 115);
+		--water-color: rgb(77, 116, 233);
+		--grass-color: rgb(205, 255, 199);
+		--electric-color: rgb(255, 235, 120);
+		--psychic-color: rgb(232, 173, 250);
+		--ice-color: rgb(182, 237, 255);
+		--dragon-color: rgb(255, 197, 138);
+		--dark-color: rgb(49, 49, 50);
+		--fairy-color: rgb(255, 205, 251);
+		--unknown-color: rgb(45, 47, 92);
+}
 body {
 	background-color: rgb(172, 171, 171);
 }
