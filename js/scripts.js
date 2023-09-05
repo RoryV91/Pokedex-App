@@ -60,32 +60,46 @@ let pokemonRepository = (function () {
 	  }
 	  
 	// LIST OF POKéMON FROM API
-	function loadList() {
-		return fetch(apiUrl)
-		  .then(function (response) {
-			return response.json();
-		  })
-		  .then(async function (json) {
-			const pokemonPromises = json.results.map(async function (item) {
-			  // Preload the thumbnail image
-			  await preloadThumbnailImage(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item.url.split("/")[6]}.png`);
-	  
-			  const pokemon = {
-				name: item.name,
-				id: item.url.split("/")[6],
-				detailsUrl: item.url,
-				thumbnailUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item.url.split("/")[6]}.png`,
-			  };
-			  add(pokemon);
-			});
-	  
-			// Wait for all the promises to resolve
-			return Promise.all(pokemonPromises);
-		  })
-		  .catch(function (e) {
-			console.error(e);
-		  });
-	  }
+// JavaScript (update the text as the loading progresses)
+async function loadList() {
+    // Show the loading spinner
+    const loadingSpinner = document.getElementById('loading-spinner');
+    const spinnerText = document.querySelector('.spinner-text');
+    loadingSpinner.style.display = 'block';
+
+    try {
+        const response = await fetch(apiUrl);
+        const json = await response.json();
+        const totalPokemon = json.results.length;
+        let loadedPokemon = 0;
+
+        for (const item of json.results) {
+            // Preload the thumbnail image
+            await preloadThumbnailImage(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item.url.split("/")[6]}.png`);
+
+            const pokemon = {
+                name: item.name,
+                id: item.url.split("/")[6],
+                detailsUrl: item.url,
+                thumbnailUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item.url.split("/")[6]}.png`,
+            };
+            add(pokemon);
+
+            // Update the loading text
+            loadedPokemon++;
+            const percentage = Math.round((loadedPokemon / totalPokemon) * 100);
+            spinnerText.textContent = `${percentage}%`;
+        }
+
+        // Hide the loading spinner when loading is complete
+        loadingSpinner.style.display = 'none';
+    } catch (e) {
+        console.error(e);
+        // Hide the loading spinner in case of an error
+        loadingSpinner.style.display = 'none';
+    }
+}
+
 	  
 	// LOAD DETAILS FOR ONE POKéMON
 	function loadDetails(item) {
