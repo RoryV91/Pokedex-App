@@ -47,7 +47,15 @@ body {
 	width: 100%;
 	z-index: 1000;
 }
-
+.navbar-toggler {
+    color: var(--text);
+}
+.navbar-toggler:hover {
+	animation: textColor 1s linear infinite;
+}
+:focus {
+	animation: textColor 1s linear infinite;
+}
 .pokemon-button {
     background-color: var(--background);
     color: var(--text);
@@ -71,7 +79,10 @@ body {
 		rgb(255, 0, 0)
     ) 7;
 }
-
+a:hover {
+	animation: textColor 1s linear infinite;
+	font-weight: bold;
+}
 #generation-dropdown {
 	background-color: var(--background);
 	border: 2px solid var(--text);
@@ -127,7 +138,6 @@ body {
 	border: 5px solid var(--background);
 	border-radius: 10px;
 }
-
 .switch {
 	display: inline-block;
 	position: relative;
@@ -177,7 +187,7 @@ input:checked + .slider:before {
 	border-top: 25px solid transparent;
 	border-right: 25px solid transparent;
 	border-radius: 50%;
-	animation: spin 1s ease-in-out infinite, changeBorder 2s linear infinite;
+	animation: spin 1.5s ease-in-out infinite, changeBorder 2s linear infinite;
 	position: fixed;
 	top: 50%;
 	left: 50%;
@@ -190,10 +200,9 @@ input:checked + .slider:before {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	animation: anti-spin 1s linear infinite, textColor 2s linear infinite;
+	animation: anti-spin 1.5s ease-in-out infinite, textColor 2s linear infinite;
 	transform: translate(-50%, -50%);
 	font-size: 20px;
-	color: #3498db;
   }
   @keyframes anti-spin {
 	0% {

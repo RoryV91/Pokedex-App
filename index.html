@@ -28,7 +28,10 @@
                 aria-controls="navbarSupportedContent"
                 aria-expanded="false"
                 aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+                    <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2H0zM0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2H0zM0 12a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2H0z"/>
+                  </svg>
+                  
             </button>
 
             <div class="collapse navbar-collapse"
@@ -87,13 +90,13 @@
                             data-section="about-page"
                             href="#">About</a>
                     </li>
-                    <li class="ml-auto ml-sm-0">
-                        <label class="switch">
-                            <input type="checkbox"
-                                id="dark-mode-toggle">
-                            <span class="slider round"></span>
-                        </label>
-                    </li>
+
+                    <label class="switch ml-auto">
+                        <input type="checkbox"
+                            id="dark-mode-toggle">
+                        <span class="slider round"></span>
+                    </label>
+
                 </ul>
             </div>
         </nav>
@@ -109,10 +112,11 @@
             <div class="container">
                 <h1>Pokémon List</h1>
                 <ul class="pokemon-list row"></ul>
-                <div id="loading-spinner" class="loading-spinner">
+                <div id="loading-spinner"
+                    class="loading-spinner">
                     <div class="spinner"></div>
                     <div class="spinner-text">0%</div>
-                  </div>
+                </div>
             </div>
             <div id="modal-container"></div>
         </section>
