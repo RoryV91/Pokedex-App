@@ -26,17 +26,22 @@ let pokemonRepository = (function () {
 		);
 
 		let button = document.createElement("button");
+		let thumbnail = document.createElement("img");
+		thumbnail.setAttribute("src", pokemon.thumbnailUrl);
+		thumbnail.setAttribute("alt", `${capitalizeFirstLetter(replaceGenderSymbols(pokemon.name))} thumbnail`);	
 		button.innerText =
 			`#${pokemon.id}` +
 			"\n" +
 			capitalizeFirstLetter(replaceGenderSymbols(pokemon.name)) +
 			"\n";
-		button.classList.add("pokemon-button", "btn-block", "btn-secondary");
+		
+		button.classList.add("pokemon-button", "btn-block");
 
 		// ADD DATA
 		button.setAttribute("data-toggle", "modal");
 		button.setAttribute("data-target", "#pokemonModal");
 
+		button.appendChild(thumbnail);
 		listItem.appendChild(button);
 		pokemonList.appendChild(listItem);
 
@@ -44,27 +49,44 @@ let pokemonRepository = (function () {
 			showDetails(pokemon, button);
 		});
 	}
-
+	// PRELOAD THUMBNAIL IMAGES
+	function preloadThumbnailImage(url) {
+		return new Promise((resolve, reject) => {
+		  const img = new Image();
+		  img.src = url;
+		  img.onload = resolve;
+		  img.onerror = reject;
+		});
+	  }
+	  
 	// LIST OF POKéMON FROM API
 	function loadList() {
 		return fetch(apiUrl)
-			.then(function (response) {
-				return response.json();
-			})
-			.then(function (json) {
-				json.results.forEach(function (item) {
-					let pokemon = {
-						name: item.name,
-						id: item.url.split("/")[6],
-						detailsUrl: item.url,
-					};
-					add(pokemon);
-				});
-			})
-			.catch(function (e) {
-				console.error(e);
+		  .then(function (response) {
+			return response.json();
+		  })
+		  .then(async function (json) {
+			const pokemonPromises = json.results.map(async function (item) {
+			  // Preload the thumbnail image
+			  await preloadThumbnailImage(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item.url.split("/")[6]}.png`);
+	  
+			  const pokemon = {
+				name: item.name,
+				id: item.url.split("/")[6],
+				detailsUrl: item.url,
+				thumbnailUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item.url.split("/")[6]}.png`,
+			  };
+			  add(pokemon);
 			});
-	}
+	  
+			// Wait for all the promises to resolve
+			return Promise.all(pokemonPromises);
+		  })
+		  .catch(function (e) {
+			console.error(e);
+		  });
+	  }
+	  
 	// LOAD DETAILS FOR ONE POKéMON
 	function loadDetails(item) {
 		let url = item.detailsUrl;
@@ -245,53 +267,53 @@ let pokemonRepository = (function () {
 		}
 	});
 
-	// DARK MODE SWITCH
-	function toggleDarkMode() {
-		const prefersDarkMode = window.matchMedia(
-			"(prefers-color-scheme: dark)"
-		).matches;
-		const darkModeToggle = document.getElementById("dark-mode-toggle");
-
-		// SET CHECKED PROPERTY BASED ON USER PREFERRENCE
-		darkModeToggle.checked = prefersDarkMode;
-
-		if (prefersDarkMode) {
-			document.documentElement.style.setProperty(
-				"--background",
-				"var(--background-dark)"
-			);
-			document.documentElement.style.setProperty("--text", "var(--text-dark)");
-		} else {
-			document.documentElement.style.setProperty(
-				"--background",
-				"var(--background-light)"
-			);
-			document.documentElement.style.setProperty("--text", "var(--text-light)");
-		}
-	}
-	toggleDarkMode();
-
-	// LISTENER
-	window.matchMedia("(prefers-color-scheme: dark)").addListener(toggleDarkMode);
+// DARK MODE SWITCH
+function toggleDarkMode() {
+	const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
 	const darkModeToggle = document.getElementById("dark-mode-toggle");
-
-	darkModeToggle.addEventListener("change", function () {
-		if (this.checked) {
-			// ENABLE
-			document.documentElement.style.setProperty(
-				"--background",
-				"var(--background-dark)"
-			);
-			document.documentElement.style.setProperty("--text", "var(--text-dark)");
-		} else {
-			// DISABLE
-			document.documentElement.style.setProperty(
-				"--background",
-				"var(--background-light)"
-			);
-			document.documentElement.style.setProperty("--text", "var(--text-light)");
-		}
-	});
+  
+	// SET CHECKED PROPERTY BASED ON USER PREFERENCE
+	darkModeToggle.checked = prefersDarkMode;
+  
+	if (prefersDarkMode) {
+	  document.documentElement.style.setProperty(
+		"--background",
+		"var(--background-dark)"
+	  );
+	  document.documentElement.style.setProperty("--text", "var(--text-dark)");
+	} else {
+	  document.documentElement.style.setProperty(
+		"--background",
+		"var(--background-light)"
+	  );
+	  document.documentElement.style.setProperty("--text", "var(--text-light)");
+	}
+  }
+  
+  toggleDarkMode();
+  
+  // DARK MODE SWITCH LISTENER
+  window.matchMedia("(prefers-color-scheme: dark)").addListener(toggleDarkMode);
+  const darkModeToggle = document.getElementById("dark-mode-toggle");
+  
+  darkModeToggle.addEventListener("change", function () {
+	if (this.checked) {
+	  // ENABLE
+	  document.documentElement.style.setProperty(
+		"--background",
+		"var(--background-dark)"
+	  );
+	  document.documentElement.style.setProperty("--text", "var(--text-dark)");
+	} else {
+	  // DISABLE
+	  document.documentElement.style.setProperty(
+		"--background",
+		"var(--background-light)"
+	  );
+	  document.documentElement.style.setProperty("--text", "var(--text-light)");
+	}
+  });
+  
 
 	// TEXT FORMATTING
 
@@ -378,11 +400,12 @@ let pokemonRepository = (function () {
 	};
 })();
 
+// CALL IIFE
+
 document.addEventListener("DOMContentLoaded", function () {
-	// CALL IIFE
-	pokemonRepository.loadList().then(function () {
-		pokemonRepository.getAll().forEach(function (pokemon) {
-			pokemonRepository.addListItem(pokemon);
-		});
-	});
+    pokemonRepository.loadList().then(function () {
+        pokemonRepository.getAll().forEach(function (pokemon) {
+            pokemonRepository.addListItem(pokemon);
+        });
+    });
 });
