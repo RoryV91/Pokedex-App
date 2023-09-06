@@ -28,6 +28,11 @@ body {
 	background-color: var(--background);
 	color: var(--text);
 }
+#home, #about-page
+ {
+  height: 100vh;
+  padding-top: 30vh;
+}
 
 .navbar {
 	background-color: var(--background);
@@ -97,11 +102,6 @@ a:hover {
 .nav-link {
 	color: var(--text);
 }
-
-.container {
-	margin-top: 90px;
-}
-
 .pokemon-button,
 .pokemon-types,
 .pokemon-abilities {
@@ -181,11 +181,9 @@ input:checked + .slider:before {
 	color: white;
 }
 .loading-spinner {
-	width: 160px;
-	height: 160px;
-	border: 25px solid transparent;
-	border-top: 25px solid transparent;
-	border-right: 25px solid transparent;
+	width: 200px;
+	height: 200px;
+	border: 10px solid transparent;
 	border-radius: 50%;
 	animation: spin 1.5s ease-in-out infinite, changeBorder 2s linear infinite;
 	position: fixed;
@@ -196,7 +194,7 @@ input:checked + .slider:before {
 	text-align: center;
   }
 
-  .spinner-text {
+  .spinner-percentage {
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -204,6 +202,7 @@ input:checked + .slider:before {
 	transform: translate(-50%, -50%);
 	font-size: 20px;
   }
+  
   @keyframes anti-spin {
 	0% {
 		transform: translate(-50%, -50%) rotate(0deg);
@@ -220,6 +219,14 @@ input:checked + .slider:before {
 	  transform: translate(-50%, -50%) rotate(360deg);
 	}
   }
+  @keyframes rotateText {
+    0% {
+        transform: translateY(0) rotate(0deg);
+    }
+    100% {
+        transform: translateY(-80px) rotate(360deg);
+    }
+}
   @keyframes textColor {
 	0% {
 		color: rgb(255, 0, 0);

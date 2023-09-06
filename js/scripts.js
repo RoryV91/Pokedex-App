@@ -28,13 +28,16 @@ let pokemonRepository = (function () {
 		let button = document.createElement("button");
 		let thumbnail = document.createElement("img");
 		thumbnail.setAttribute("src", pokemon.thumbnailUrl);
-		thumbnail.setAttribute("alt", `${capitalizeFirstLetter(replaceGenderSymbols(pokemon.name))} thumbnail`);	
+		thumbnail.setAttribute(
+			"alt",
+			`${capitalizeFirstLetter(replaceGenderSymbols(pokemon.name))} thumbnail`
+		);
 		button.innerText =
 			`#${pokemon.id}` +
 			"\n" +
 			capitalizeFirstLetter(replaceGenderSymbols(pokemon.name)) +
 			"\n";
-		
+
 		button.classList.add("pokemon-button", "btn-block");
 
 		// ADD DATA
@@ -52,55 +55,60 @@ let pokemonRepository = (function () {
 	// PRELOAD THUMBNAIL IMAGES
 	function preloadThumbnailImage(url) {
 		return new Promise((resolve, reject) => {
-		  const img = new Image();
-		  img.src = url;
-		  img.onload = resolve;
-		  img.onerror = reject;
+			const img = new Image();
+			img.src = url;
+			img.onload = resolve;
+			img.onerror = reject;
 		});
-	  }
-	  
+	}
+
 	// LIST OF POKéMON FROM API
-// JavaScript (update the text as the loading progresses)
-async function loadList() {
-    // Show the loading spinner
-    const loadingSpinner = document.getElementById('loading-spinner');
-    const spinnerText = document.querySelector('.spinner-text');
-    loadingSpinner.style.display = 'block';
+	async function loadList() {
+		// SHOW LOADING SPINNER
+		const loadingSpinner = document.getElementById("loading-spinner");
+		const spinnerText = document.querySelector(".spinner-text");
+		const spinnerPercentage = document.querySelector('.spinner-percentage');
+		loadingSpinner.style.display = "block";
 
-    try {
-        const response = await fetch(apiUrl);
-        const json = await response.json();
-        const totalPokemon = json.results.length;
-        let loadedPokemon = 0;
+		try {
+			const response = await fetch(apiUrl);
+			const json = await response.json();
+			const totalPokemon = json.results.length;
+			let loadedPokemon = 0;
 
-        for (const item of json.results) {
-            // Preload the thumbnail image
-            await preloadThumbnailImage(`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item.url.split("/")[6]}.png`);
+			for (const item of json.results) {
+				// PRELOAD THUMBNAIL IMAGE
+				await preloadThumbnailImage(
+					`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+						item.url.split("/")[6]
+					}.png`
+				);
 
-            const pokemon = {
-                name: item.name,
-                id: item.url.split("/")[6],
-                detailsUrl: item.url,
-                thumbnailUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${item.url.split("/")[6]}.png`,
-            };
-            add(pokemon);
+				const pokemon = {
+					name: item.name,
+					id: item.url.split("/")[6],
+					detailsUrl: item.url,
+					thumbnailUrl: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+						item.url.split("/")[6]
+					}.png`,
+				};
+				add(pokemon);
 
-            // Update the loading text
-            loadedPokemon++;
-            const percentage = Math.round((loadedPokemon / totalPokemon) * 100);
-            spinnerText.textContent = `${percentage}%`;
-        }
+				// UPDATE LOADING SPINNER
+				loadedPokemon++;
+				const percentage = Math.round((loadedPokemon / totalPokemon) * 100);
+				spinnerPercentage.textContent = `Loading Pokémon images: ${percentage}%`;
+			}
 
-        // Hide the loading spinner when loading is complete
-        loadingSpinner.style.display = 'none';
-    } catch (e) {
-        console.error(e);
-        // Hide the loading spinner in case of an error
-        loadingSpinner.style.display = 'none';
-    }
-}
+			// HIDE SPINNER WHEN COMPLETE
+			loadingSpinner.style.display = "none";
+		} catch (e) {
+			console.error(e);
+			// Hide the loading spinner in case of an error
+			loadingSpinner.style.display = "none";
+		}
+	}
 
-	  
 	// LOAD DETAILS FOR ONE POKéMON
 	function loadDetails(item) {
 		let url = item.detailsUrl;
@@ -152,7 +160,7 @@ async function loadList() {
 		// DETERMINE POKéMON TYPE(S)
 		const types = pokemon.types.map((type) => type.type.name);
 
-		// Set the background color of the modal content
+		// MODAL BACKGROUND COLOR
 		if (types.length === 1) {
 			modalContent.style.backgroundColor = `var(--${types[0]}-color)`;
 		} else {
@@ -281,53 +289,54 @@ async function loadList() {
 		}
 	});
 
-// DARK MODE SWITCH
-function toggleDarkMode() {
-	const prefersDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
+	// DARK MODE SWITCH
+	function toggleDarkMode() {
+		const prefersDarkMode = window.matchMedia(
+			"(prefers-color-scheme: dark)"
+		).matches;
+		const darkModeToggle = document.getElementById("dark-mode-toggle");
+
+		// SET CHECKED PROPERTY BASED ON USER PREFERENCE
+		darkModeToggle.checked = prefersDarkMode;
+
+		if (prefersDarkMode) {
+			document.documentElement.style.setProperty(
+				"--background",
+				"var(--background-dark)"
+			);
+			document.documentElement.style.setProperty("--text", "var(--text-dark)");
+		} else {
+			document.documentElement.style.setProperty(
+				"--background",
+				"var(--background-light)"
+			);
+			document.documentElement.style.setProperty("--text", "var(--text-light)");
+		}
+	}
+
+	toggleDarkMode();
+
+	// DARK MODE SWITCH LISTENER
+	window.matchMedia("(prefers-color-scheme: dark)").addListener(toggleDarkMode);
 	const darkModeToggle = document.getElementById("dark-mode-toggle");
-  
-	// SET CHECKED PROPERTY BASED ON USER PREFERENCE
-	darkModeToggle.checked = prefersDarkMode;
-  
-	if (prefersDarkMode) {
-	  document.documentElement.style.setProperty(
-		"--background",
-		"var(--background-dark)"
-	  );
-	  document.documentElement.style.setProperty("--text", "var(--text-dark)");
-	} else {
-	  document.documentElement.style.setProperty(
-		"--background",
-		"var(--background-light)"
-	  );
-	  document.documentElement.style.setProperty("--text", "var(--text-light)");
-	}
-  }
-  
-  toggleDarkMode();
-  
-  // DARK MODE SWITCH LISTENER
-  window.matchMedia("(prefers-color-scheme: dark)").addListener(toggleDarkMode);
-  const darkModeToggle = document.getElementById("dark-mode-toggle");
-  
-  darkModeToggle.addEventListener("change", function () {
-	if (this.checked) {
-	  // ENABLE
-	  document.documentElement.style.setProperty(
-		"--background",
-		"var(--background-dark)"
-	  );
-	  document.documentElement.style.setProperty("--text", "var(--text-dark)");
-	} else {
-	  // DISABLE
-	  document.documentElement.style.setProperty(
-		"--background",
-		"var(--background-light)"
-	  );
-	  document.documentElement.style.setProperty("--text", "var(--text-light)");
-	}
-  });
-  
+
+	darkModeToggle.addEventListener("change", function () {
+		if (this.checked) {
+			// ENABLE
+			document.documentElement.style.setProperty(
+				"--background",
+				"var(--background-dark)"
+			);
+			document.documentElement.style.setProperty("--text", "var(--text-dark)");
+		} else {
+			// DISABLE
+			document.documentElement.style.setProperty(
+				"--background",
+				"var(--background-light)"
+			);
+			document.documentElement.style.setProperty("--text", "var(--text-light)");
+		}
+	});
 
 	// TEXT FORMATTING
 
@@ -417,9 +426,9 @@ function toggleDarkMode() {
 // CALL IIFE
 
 document.addEventListener("DOMContentLoaded", function () {
-    pokemonRepository.loadList().then(function () {
-        pokemonRepository.getAll().forEach(function (pokemon) {
-            pokemonRepository.addListItem(pokemon);
-        });
-    });
+	pokemonRepository.loadList().then(function () {
+		pokemonRepository.getAll().forEach(function (pokemon) {
+			pokemonRepository.addListItem(pokemon);
+		});
+	});
 });
