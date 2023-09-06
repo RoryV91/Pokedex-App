@@ -3,6 +3,7 @@ let pokemonRepository = (function () {
 	// GLOBAL VARIABLES
 	let pokemonList = [];
 	let apiUrl = "https://pokeapi.co/api/v2/pokemon/?limit=1010";
+	let generationURls = []
 
 	// PUSH TO LIST
 	function add(pokemon) {
@@ -65,9 +66,10 @@ let pokemonRepository = (function () {
 	// LIST OF POKéMON FROM API
 	async function loadList() {
 		// SHOW LOADING SPINNER
+		const loadingBackdrop = document.getElementById("loading-backdrop");
 		const loadingSpinner = document.getElementById("loading-spinner");
-		const spinnerText = document.querySelector(".spinner-text");
 		const spinnerPercentage = document.querySelector('.spinner-percentage');
+		loadingBackdrop.style.display = "block";
 		loadingSpinner.style.display = "block";
 
 		try {
@@ -101,10 +103,12 @@ let pokemonRepository = (function () {
 			}
 
 			// HIDE SPINNER WHEN COMPLETE
+			loadingBackdrop.style.display = "none";
 			loadingSpinner.style.display = "none";
 		} catch (e) {
 			console.error(e);
-			// Hide the loading spinner in case of an error
+			// HIDE SPINNER ON ERROR
+			loadingBackdrop.style.display = "none";
 			loadingSpinner.style.display = "none";
 		}
 	}
