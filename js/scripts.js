@@ -2,8 +2,6 @@
 let pokemonRepository = (function () {
 	// GLOBAL VARIABLES
 	let pokemonList = [];
-	let apiUrl = "https://pokeapi.co/api/v2/pokemon/?limit=1010";
-	let generationURls = []
 
 	// PUSH TO LIST
 	function add(pokemon) {
@@ -15,6 +13,7 @@ let pokemonRepository = (function () {
 	// FOR EACH POKéMON BUTTON
 	function addListItem(pokemon) {
 		let pokemonList = document.querySelector(".pokemon-list");
+
 		let listItem = document.createElement("li");
 		listItem.classList.add(
 			"col-12",
@@ -64,27 +63,36 @@ let pokemonRepository = (function () {
 	}
 
 	// LIST OF POKéMON FROM API
-	async function loadList() {
+	async function loadList(offset, limit) {
 		// SHOW LOADING SPINNER
 		const loadingBackdrop = document.getElementById("loading-backdrop");
 		const loadingSpinner = document.getElementById("loading-spinner");
-		const spinnerPercentage = document.querySelector('.spinner-percentage');
+		const spinnerPercentage = document.querySelector(".spinner-percentage");
+		const loadingScreen = document.getElementById("loading-screen");
+
 		loadingBackdrop.style.display = "block";
 		loadingSpinner.style.display = "block";
+
+		const apiUrl = `https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=${offset}`;
+		let pokemonCount = 0;
 
 		try {
 			const response = await fetch(apiUrl);
 			const json = await response.json();
 			const totalPokemon = json.results.length;
-			let loadedPokemon = 0;
 
 			for (const item of json.results) {
 				// PRELOAD THUMBNAIL IMAGE
-				await preloadThumbnailImage(
-					`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
-						item.url.split("/")[6]
-					}.png`
-				);
+				try {
+					await preloadThumbnailImage(
+						`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${
+							item.url.split("/")[6]
+						}.png`
+					);
+				} catch (error) {
+					console.error("Error preloading image:", error);
+					continue;
+				}
 
 				const pokemon = {
 					name: item.name,
@@ -97,20 +105,27 @@ let pokemonRepository = (function () {
 				add(pokemon);
 
 				// UPDATE LOADING SPINNER
-				loadedPokemon++;
-				const percentage = Math.round((loadedPokemon / totalPokemon) * 100);
-				spinnerPercentage.textContent = `Loading Pokémon images: ${percentage}%`;
+				pokemonCount++;
+				const percentage = Math.round((pokemonCount / totalPokemon) * 100);
+				spinnerPercentage.textContent = `${percentage}%`;
 			}
 
 			// HIDE SPINNER WHEN COMPLETE
-			loadingBackdrop.style.display = "none";
-			loadingSpinner.style.display = "none";
+			loadingScreen.style.display = "none";
 		} catch (e) {
 			console.error(e);
 			// HIDE SPINNER ON ERROR
-			loadingBackdrop.style.display = "none";
-			loadingSpinner.style.display = "none";
+			loadingScreen.style.display = "none";
 		}
+	}
+
+	// REFRESH POKéMON LIST
+	function refreshList(offset, limit) {
+		loadList(offset, limit).then(function () {
+			pokemonRepository.getAll().forEach(function (pokemon) {
+				pokemonRepository.addListItem(pokemon);
+			});
+		});
 	}
 
 	// LOAD DETAILS FOR ONE POKéMON
@@ -369,8 +384,6 @@ let pokemonRepository = (function () {
 		}
 	}
 
-	// PAGE NAVIGATION
-
 	// EVENT LISTENER FOR NAVBAR
 	document.querySelectorAll(".nav-link").forEach((anchor) => {
 		anchor.addEventListener("click", function (e) {
@@ -391,24 +404,20 @@ let pokemonRepository = (function () {
 		genLink.addEventListener("click", function (e) {
 			e.preventDefault();
 
-			// FIND FIRST POKéMON OF GENERATION
-			const offset = genLink.getAttribute("data-offset");
-			const buttons = document.querySelectorAll(".pokemon-button");
-			const buttonToFocus = buttons[offset];
-			if (buttonToFocus) {
-				const navHeight = document.querySelector(".navbar").offsetHeight;
-				const buttonPosition = buttonToFocus.getBoundingClientRect().top;
-				const scrollPosition = window.scrollY + buttonPosition - navHeight;
+			// Show the loading screen
+			const loadingScreen = document.getElementById("loading-screen");
+			loadingScreen.style.display = "block";
 
-				window.scrollTo({
-					top: scrollPosition,
-					behavior: "smooth",
-				});
+			// EXTRACT OFFSET AND LIMIT FROM DATA ATTRIBUTES
+			const offset = parseInt(this.getAttribute("data-offset"));
+			const limit = parseInt(this.getAttribute("data-limit"));
 
-				setTimeout(() => {
-					buttonToFocus.focus();
-				}, 500);
-			}
+			// CLEAR POKéMON LIST
+			let pokemonList = document.querySelector(".pokemon-list");
+			pokemonList.innerHTML = "";
+
+			// CALL LOADLIST FUNCTION
+			refreshList(offset, limit);
 		});
 	});
 
@@ -429,10 +438,8 @@ let pokemonRepository = (function () {
 
 // CALL IIFE
 
-document.addEventListener("DOMContentLoaded", function () {
-	pokemonRepository.loadList().then(function () {
-		pokemonRepository.getAll().forEach(function (pokemon) {
-			pokemonRepository.addListItem(pokemon);
-		});
+pokemonRepository.loadList(0, 151).then(function () {
+	pokemonRepository.getAll().forEach(function (pokemon) {
+		pokemonRepository.addListItem(pokemon);
 	});
 });

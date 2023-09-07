@@ -73,11 +73,30 @@ body {
 	overflow: hidden;
 	transition: border 0.1s ease;
 }
-
+.pagination {
+    text-align: center;
+}
+.pagination button {
+	background-color: var(--background);
+	color: var(--text);
+	border: 2px solid var(--text);
+	border-radius: 10px;
+	overflow: hidden;
+	transition: border 0.1s ease;
+	margin: 20px auto;
+}
+.pagination button:hover {
+	background-color: var(--text);
+	color: var(--background);
+	animation: textColor 1s linear infinite;
+	font-weight: bold;
+}
 .pokemon-button:hover {
 	background-color: var(--text);
 	color: var(--background);
 	border: 5px solid transparent;
+	animation: textColor 1s linear infinite;
+	font-weight: bold;
 	border-image: linear-gradient(45deg,
 			rgb(255, 0, 0),
 			rgb(255, 255, 0),
@@ -200,8 +219,8 @@ input:checked + .slider:before {
     z-index: 9998;
 }
 .loading-spinner {
-	width: 200px;
-	height: 200px;
+	width: 150px;
+	height: 150px;
 	border: 10px solid transparent;
 	border-radius: 50%;
 	animation: spin 1.5s ease-in-out infinite, changeBorder 2s linear infinite;
@@ -214,12 +233,13 @@ input:checked + .slider:before {
 }
 
 .spinner-percentage {
-	position: absolute;
+	position: fixed;
 	top: 50%;
 	left: 50%;
-	animation: anti-spin 1.5s ease-in-out infinite, textColor 2s linear infinite;
+	animation: textColor 2s linear infinite;
 	transform: translate(-50%, -50%);
 	font-size: 20px;
+	z-index: 9999;
 }
 
 @keyframes anti-spin {
