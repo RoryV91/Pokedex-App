@@ -5,15 +5,20 @@ let pokemonRepository = (function () {
 
 	// PUSH TO LIST
 	function add(pokemon) {
+		console.log("add");
 		pokemonList.push(pokemon);
 	}
+
+	// GET LIST
 	function getAll() {
+		console.log("get all");
 		return pokemonList;
 	}
-	// FOR EACH POKéMON BUTTON
-	function addListItem(pokemon) {
-		let pokemonList = document.querySelector(".pokemon-list");
 
+	// ADD POKéMON BUTTON TO LIST
+	function addListItem(pokemon) {
+		console.log("add list item");
+		let pokemonButtonList = document.querySelector(".pokemon-list");
 		let listItem = document.createElement("li");
 		listItem.classList.add(
 			"col-12",
@@ -24,7 +29,6 @@ let pokemonRepository = (function () {
 			"list-unstyled",
 			"text-center"
 		);
-
 		let button = document.createElement("button");
 		let thumbnail = document.createElement("img");
 		thumbnail.setAttribute("src", pokemon.thumbnailUrl);
@@ -44,14 +48,16 @@ let pokemonRepository = (function () {
 		button.setAttribute("data-toggle", "modal");
 		button.setAttribute("data-target", "#pokemonModal");
 
+		// ADD IMG TO BUTTON, BUTTON TO LIST ITEM, LIST ITEM TO LIST
+		console.log(pokemon.id)
 		button.appendChild(thumbnail);
 		listItem.appendChild(button);
-		pokemonList.appendChild(listItem);
-
+		pokemonButtonList.appendChild(listItem);
 		button.addEventListener("click", function (e) {
 			showDetails(pokemon, button);
 		});
 	}
+
 	// PRELOAD THUMBNAIL IMAGES
 	function preloadThumbnailImage(url) {
 		return new Promise((resolve, reject) => {
@@ -62,9 +68,22 @@ let pokemonRepository = (function () {
 		});
 	}
 
+	// REMOVE EXISTING POKéMON BUTTONS
+	function removeListItems() {
+		const container = document.querySelector(".pokemon-list");
+		if (container) {
+			while (container.firstChild) {
+				container.removeChild(container.firstChild);
+			}
+		}
+		pokemonList = [];
+	}
+
 	// LIST OF POKéMON FROM API
 	async function loadList(offset, limit) {
 		// SHOW LOADING SPINNER
+
+		// LOADING SPINNER ELEMENTS
 		const loadingBackdrop = document.getElementById("loading-backdrop");
 		const loadingSpinner = document.getElementById("loading-spinner");
 		const spinnerPercentage = document.querySelector(".spinner-percentage");
@@ -73,13 +92,19 @@ let pokemonRepository = (function () {
 		loadingBackdrop.style.display = "block";
 		loadingSpinner.style.display = "block";
 
-		const apiUrl = `https://pokeapi.co/api/v2/pokemon/?limit=${limit}&offset=${offset}`;
+		const apiUrl = `https://pokeapi.co/api/v2/pokemon/?offset=${offset}&limit=${limit}`;
 		let pokemonCount = 0;
 
 		try {
+			// CLEAR POKéMON LIST
+			pokemonList = [];
+			console.log(offset, limit);
+			console.log(apiUrl);
 			const response = await fetch(apiUrl);
 			const json = await response.json();
-			const totalPokemon = json.results.length;
+			console.log(json);
+
+			
 
 			for (const item of json.results) {
 				// PRELOAD THUMBNAIL IMAGE
@@ -103,10 +128,11 @@ let pokemonRepository = (function () {
 					}.png`,
 				};
 				add(pokemon);
+				console.log(pokemon);
 
 				// UPDATE LOADING SPINNER
 				pokemonCount++;
-				const percentage = Math.round((pokemonCount / totalPokemon) * 100);
+				const percentage = Math.round((pokemonCount / limit) * 100);
 				spinnerPercentage.textContent = `${percentage}%`;
 			}
 
@@ -117,15 +143,6 @@ let pokemonRepository = (function () {
 			// HIDE SPINNER ON ERROR
 			loadingScreen.style.display = "none";
 		}
-	}
-
-	// REFRESH POKéMON LIST
-	function refreshList(offset, limit) {
-		loadList(offset, limit).then(function () {
-			pokemonRepository.getAll().forEach(function (pokemon) {
-				pokemonRepository.addListItem(pokemon);
-			});
-		});
 	}
 
 	// LOAD DETAILS FOR ONE POKéMON
@@ -318,12 +335,15 @@ let pokemonRepository = (function () {
 		// SET CHECKED PROPERTY BASED ON USER PREFERENCE
 		darkModeToggle.checked = prefersDarkMode;
 
+		// SET DARK MODE ON
 		if (prefersDarkMode) {
 			document.documentElement.style.setProperty(
 				"--background",
 				"var(--background-dark)"
 			);
 			document.documentElement.style.setProperty("--text", "var(--text-dark)");
+
+			// SET LIGHT MODE ON
 		} else {
 			document.documentElement.style.setProperty(
 				"--background",
@@ -332,7 +352,7 @@ let pokemonRepository = (function () {
 			document.documentElement.style.setProperty("--text", "var(--text-light)");
 		}
 	}
-
+	// CALL DARK MODE SWITCH
 	toggleDarkMode();
 
 	// DARK MODE SWITCH LISTENER
@@ -401,10 +421,10 @@ let pokemonRepository = (function () {
 	// EVENT LISTENER FOR DROPDOWN MENU
 	const generationLinks = document.querySelectorAll(".generation-link");
 	generationLinks.forEach(function (genLink) {
-		genLink.addEventListener("click", function (e) {
+		genLink.addEventListener("click", async function (e) {
 			e.preventDefault();
 
-			// Show the loading screen
+			// SHOW LOADING SCREEN
 			const loadingScreen = document.getElementById("loading-screen");
 			loadingScreen.style.display = "block";
 
@@ -413,11 +433,19 @@ let pokemonRepository = (function () {
 			const limit = parseInt(this.getAttribute("data-limit"));
 
 			// CLEAR POKéMON LIST
-			let pokemonList = document.querySelector(".pokemon-list");
-			pokemonList.innerHTML = "";
-
+			pokemonRepository.removeListItems();
+			console.log("remove list items");
 			// CALL LOADLIST FUNCTION
-			refreshList(offset, limit);
+			await pokemonRepository.loadList(offset, limit);
+
+			// ADD NEW POKéMON BUTTONS TO THE LIST
+			pokemonRepository.getAll().forEach(function (pokemon) {
+				console.log("CLICKED")
+				console.log(pokemonList)
+				console.log("Adding ", pokemon);
+				pokemonRepository.addListItem(pokemon);
+
+			});
 		});
 	});
 
@@ -426,7 +454,9 @@ let pokemonRepository = (function () {
 		add: add,
 		getAll: getAll,
 		addListItem: addListItem,
+		removeListItems: removeListItems,
 		showDetails: showDetails,
+		preloadThumbnailImage: preloadThumbnailImage,
 		loadList: loadList,
 		loadDetails: loadDetails,
 		showModal: showModal,
