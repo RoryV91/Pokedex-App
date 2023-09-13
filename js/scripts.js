@@ -1,11 +1,12 @@
 // IIFE
-let pokemonRepository = (function () {
+const pokemonRepository = (function () {
 	// GLOBAL VARIABLES
 	let pokemonList = [];
 
 	// PUSH TO LIST
 	function add(pokemon) {
 		console.log("add");
+		// eslint-disable-next-line semi
 		pokemonList.push(pokemon);
 	}
 
@@ -49,7 +50,7 @@ let pokemonRepository = (function () {
 		button.setAttribute("data-target", "#pokemonModal");
 
 		// ADD IMG TO BUTTON, BUTTON TO LIST ITEM, LIST ITEM TO LIST
-		console.log(pokemon.id)
+		console.log(pokemon.id);
 		button.appendChild(thumbnail);
 		listItem.appendChild(button);
 		pokemonButtonList.appendChild(listItem);
@@ -103,8 +104,6 @@ let pokemonRepository = (function () {
 			const response = await fetch(apiUrl);
 			const json = await response.json();
 			console.log(json);
-
-			
 
 			for (const item of json.results) {
 				// PRELOAD THUMBNAIL IMAGE
@@ -440,11 +439,10 @@ let pokemonRepository = (function () {
 
 			// ADD NEW POKéMON BUTTONS TO THE LIST
 			pokemonRepository.getAll().forEach(function (pokemon) {
-				console.log("CLICKED")
-				console.log(pokemonList)
+				console.log("CLICKED");
+				console.log(pokemonList);
 				console.log("Adding ", pokemon);
 				pokemonRepository.addListItem(pokemon);
-
 			});
 		});
 	});
