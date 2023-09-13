@@ -32,7 +32,11 @@ body {
 #home,
 #about-page {
 	height: 100vh;
-	padding-top: 30vh;
+	padding-top: 15vh;
+	text-align: center;
+}
+.title-animation {
+	animation: textColor 1s linear infinite;
 }
 
 .navbar {
