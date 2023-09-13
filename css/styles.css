@@ -31,8 +31,12 @@ body {
 
 #home,
 #about-page {
-	height: 100vh;
+	height: 90vh;
 	padding-top: 15vh;
+	text-align: center;
+}
+#pokemon-page {
+	padding-top: 5vh;
 	text-align: center;
 }
 .title-animation, .special-thanks {
