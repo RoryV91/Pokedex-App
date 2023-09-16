@@ -5,20 +5,16 @@ const pokemonRepository = (function () {
 
 	// PUSH TO LIST
 	function add(pokemon) {
-		console.log("add");
-		// eslint-disable-next-line semi
 		pokemonList.push(pokemon);
 	}
 
 	// GET LIST
 	function getAll() {
-		console.log("get all");
 		return pokemonList;
 	}
 
 	// ADD POKéMON BUTTON TO LIST
 	function addListItem(pokemon) {
-		console.log("add list item");
 		let pokemonButtonList = document.querySelector(".pokemon-list");
 		let listItem = document.createElement("li");
 		listItem.classList.add(
@@ -50,7 +46,6 @@ const pokemonRepository = (function () {
 		button.setAttribute("data-target", "#pokemonModal");
 
 		// ADD IMG TO BUTTON, BUTTON TO LIST ITEM, LIST ITEM TO LIST
-		console.log(pokemon.id);
 		button.appendChild(thumbnail);
 		listItem.appendChild(button);
 		pokemonButtonList.appendChild(listItem);
@@ -99,11 +94,8 @@ const pokemonRepository = (function () {
 		try {
 			// CLEAR POKéMON LIST
 			pokemonList = [];
-			console.log(offset, limit);
-			console.log(apiUrl);
 			const response = await fetch(apiUrl);
 			const json = await response.json();
-			console.log(json);
 
 			for (const item of json.results) {
 				// PRELOAD THUMBNAIL IMAGE
@@ -127,7 +119,6 @@ const pokemonRepository = (function () {
 					}.png`,
 				};
 				add(pokemon);
-				console.log(pokemon);
 
 				// UPDATE LOADING SPINNER
 				pokemonCount++;
@@ -433,15 +424,11 @@ const pokemonRepository = (function () {
 
 			// CLEAR POKéMON LIST
 			pokemonRepository.removeListItems();
-			console.log("remove list items");
 			// CALL LOADLIST FUNCTION
 			await pokemonRepository.loadList(offset, limit);
 
 			// ADD NEW POKéMON BUTTONS TO THE LIST
 			pokemonRepository.getAll().forEach(function (pokemon) {
-				console.log("CLICKED");
-				console.log(pokemonList);
-				console.log("Adding ", pokemon);
 				pokemonRepository.addListItem(pokemon);
 			});
 		});
